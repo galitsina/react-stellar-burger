@@ -30,7 +30,7 @@ function BurgerConstructor(props) {
         <div className={`${constructorStyles.scroll} custom-scroll pr-1`}>
           {notBuns.map(item => {
             return (
-              <div className={`${constructorStyles.not__buns} `}>
+              <div className={constructorStyles.not__buns} key={item._id}>
                 <DragIcon type="primary" />
                 <ConstructorElement
                   text={item.name}
