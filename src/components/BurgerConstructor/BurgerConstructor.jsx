@@ -1,13 +1,11 @@
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './BurgerConstructor.module.css';
 import { splitIngredients } from '../../utils/IngredientsUtils';
-import React from 'react';
-import { data } from '../../utils/data';
 import {ingredientPropType} from '../../utils/PropTypes';
 import PropTypes from 'prop-types';
 
 function BurgerConstructor(props) {
-  const ingredients = splitIngredients(data);
+  const ingredients = splitIngredients(props.data);
   const buns = ingredients.buns;
   const randIndex = Math.floor(Math.random() * buns.length);
   const randBun = buns[randIndex];
@@ -64,7 +62,7 @@ function BurgerConstructor(props) {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType)
+  data: PropTypes.arrayOf(ingredientPropType).isRequired
 }
 
 export default BurgerConstructor;

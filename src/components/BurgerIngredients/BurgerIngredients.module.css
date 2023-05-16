@@ -11,11 +11,3 @@
   overflow: scroll;
   overflow-x: hidden;
 }
-
-.ingredient__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 272px);
-  gap: 32px 24px;
-}
-
-
