@@ -1,0 +1,13 @@
+.section {
+  width: 600px;
+}
+
+.navigaton {
+  display: flex;
+}
+
+.ingredients {
+  height: 756px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
