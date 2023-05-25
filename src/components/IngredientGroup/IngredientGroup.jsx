@@ -1,7 +1,8 @@
 import IngredientGroupStyles from './IngredientGroup.module.css';
 import BurgerIngredient from '../BurgerIngredient/BurgerIngredient';
+import {ingredientPropType} from '../../utils/PropTypes';
 
-function IngredientGroup ({title, ingredients}) {
+const IngredientGroup = ({title, ingredients}) => {
   return (
     <div className="pt-10">
       <h2 className="text text_type_main-medium">{title}</h2>
@@ -13,5 +14,7 @@ function IngredientGroup ({title, ingredients}) {
     </div>
   )
 }
+
+IngredientGroup.propTypes = {ingredientPropType};
 
 export default IngredientGroup;

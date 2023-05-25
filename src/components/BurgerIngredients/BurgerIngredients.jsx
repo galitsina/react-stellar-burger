@@ -6,7 +6,7 @@ import {ingredientPropType} from '../../utils/PropTypes';
 import PropTypes from 'prop-types';
 import IngredientGroup from '../IngredientGroup/IngredientGroup';
 
-function BurgerIngredients(props) {
+const BurgerIngredients = (props) => {
   const Tabs = {
     BUN: 'bun',
     SAUCE: 'sauce',

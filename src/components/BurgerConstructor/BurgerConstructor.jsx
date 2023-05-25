@@ -4,12 +4,11 @@ import { splitIngredients } from '../../utils/IngredientsUtils';
 import {ingredientPropType} from '../../utils/PropTypes';
 import PropTypes from 'prop-types';
 
-function BurgerConstructor(props) {
+const BurgerConstructor = (props) => {
   const ingredients = splitIngredients(props.data);
   const buns = ingredients.buns;
   const randIndex = Math.floor(Math.random() * buns.length);
   const randBun = buns[randIndex];
-
   const sauces = ingredients.sauces;
   const fillings = ingredients.fillings;
   const notBuns = sauces.concat(fillings);
