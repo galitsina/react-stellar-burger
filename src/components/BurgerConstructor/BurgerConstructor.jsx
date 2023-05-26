@@ -1,8 +1,11 @@
+import React from 'react';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './BurgerConstructor.module.css';
 import { splitIngredients } from '../../utils/IngredientsUtils';
-import {ingredientPropType} from '../../utils/PropTypes';
+import { ingredientPropType } from '../../utils/PropTypes';
 import PropTypes from 'prop-types';
+import Modal from '../Modal/Modal';
+import OrderDetails from '../OrderDetails/OrderDetails';
 
 const BurgerConstructor = (props) => {
   const ingredients = splitIngredients(props.data);
@@ -13,6 +16,19 @@ const BurgerConstructor = (props) => {
   const fillings = ingredients.fillings;
   const notBuns = sauces.concat(fillings);
 
+  const [open, setOpen] = React.useState();
+  const handleOpenModal = () => {
+    setOpen(true);
+  }
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  }
+
+  const orderDetails = (<OrderDetails orderId='034536'/>)
+  const modal = (
+    <Modal closeModal={handleCloseModal} component={orderDetails} modalOpened={open}/>
+  )
   return (
     <section className={`${constructorStyles.section} pt-25 pl-4`}>
       <div className={constructorStyles.burger__constructor}>
@@ -52,10 +68,13 @@ const BurgerConstructor = (props) => {
           <p className="text text_type_digits-medium">610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large">
-          Оформить заказ
-        </Button>
+        <div onClick={handleOpenModal}>
+          <Button htmlType="button" type="primary" size="large">
+            Оформить заказ
+          </Button>
+        </div>
       </div>
+      {modal}
     </section>
   )
 }
