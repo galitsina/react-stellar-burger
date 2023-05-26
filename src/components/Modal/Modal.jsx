@@ -1,8 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
-import OrderDetails from '../OrderDetails/OrderDetails';
 import ModalStyles from './Modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ingredientPropType } from '../../utils/PropTypes';
