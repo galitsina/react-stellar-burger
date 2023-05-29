@@ -16,7 +16,7 @@ const BurgerConstructor = (props) => {
   const fillings = ingredients.fillings;
   const notBuns = sauces.concat(fillings);
 
-  const [open, setOpen] = React.useState();
+  const [open, setOpen] = React.useState(false);
   const handleOpenModal = () => {
     setOpen(true);
   }
@@ -27,7 +27,7 @@ const BurgerConstructor = (props) => {
 
   const orderDetails = (<OrderDetails orderId='034536'/>)
   const modal = (
-    <Modal closeModal={handleCloseModal} component={orderDetails} modalOpened={open}/>
+    <Modal closeModal={handleCloseModal} component={orderDetails} />
   )
   return (
     <section className={`${constructorStyles.section} pt-25 pl-4`}>
@@ -74,7 +74,7 @@ const BurgerConstructor = (props) => {
           </Button>
         </div>
       </div>
-      {modal}
+      {open && modal}
     </section>
   )
 }

@@ -1,11 +1,11 @@
 import IngredientDetailsStyles from './IngredientDetails.module.css';
 import {ingredientPropType} from '../../utils/PropTypes';
 
-const IngredientDetails = ({ image, title, calories, proteins, fat, carbohydrates }) => {
+const IngredientDetails = ({ingredient: {image_large, name, calories, proteins, fat, carbohydrates}}) => {
   return (
     <div className={`${IngredientDetailsStyles.container} mb-15`}>
-      <img src={image} />
-      <p className="text text_type_main-medium mt-4">{title}</p>
+      <img src={image_large} />
+      <p className="text text_type_main-medium mt-4">{name}</p>
       <div className={`${IngredientDetailsStyles.calories__grid} mt-8`}>
         <p className="text text_type_main-default text_color_inactive">Калории,ккал</p>
         <p className="text text_type_main-default text_color_inactive">Белки, г</p>
@@ -20,6 +20,6 @@ const IngredientDetails = ({ image, title, calories, proteins, fat, carbohydrate
   )
 }
 
-IngredientDetails.propTypes = {ingredientPropType};
+IngredientDetails.propTypes = {ingredient: ingredientPropType};
 
 export default IngredientDetails;

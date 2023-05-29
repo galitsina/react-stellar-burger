@@ -3,25 +3,27 @@ import styles from "./App.module.css";
 import AppHeader from "../AppHeader/AppHeader"
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients"
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor"
-
-const url = 'https://norma.nomoreparties.space/api/ingredients';
+import {getIngredients} from "../../utils/BurgerApi";
 
 const App = () => {
-  const [state, setState] = React.useState([])
+  const [state, setState] = React.useState({
+    isLoading: false,
+    hasError: false,
+    data:[]
+  })
+  const {isLoading, hasError, data} = state
 
   React.useEffect( () => {
     const getData = () => {
-      fetch(url)
+      setState({...state, hasError: false, isLoading: true})
+      getIngredients()
         .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Что-то пошло не так: ${res.status}`);
+          setState({...state, isLoading: false, data:res.data})
         })
-        .then((res) => {
-          setState(res.data)
+        .catch((err) => {
+          console.log(`Произошла ошибка: ${err}`);
+          setState({...state, hasError: true, isLoading: false})
         })
-        .catch((err) => {console.log(`Произошла ошибка: ${err}`)})
     }
     getData()
   }, [])
@@ -29,10 +31,10 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      {state.length &&
+      {!isLoading && !hasError && Boolean(data.length) &&
       <main className={styles.main}>
-        <BurgerIngredients data={state} />
-        <BurgerConstructor data={state} />
+        <BurgerIngredients data={data} />
+        <BurgerConstructor data={data} />
       </main>}
     </div>
   );
