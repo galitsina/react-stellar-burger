@@ -1,17 +1,17 @@
 # **Stellar burgers**
 
-## Описание проекта
-Проект «Stellar burgers» - приложение космической бургерной.
+## Project Description
+The "Stellar Burgers" project is a space burger application.
 
-## В проекте реализовано:
-* Возможность выбирать товар и добавлять его в корзину
-* Удалять товар из корзины
-* Подсчет итоговой стоимости бургера
-* Модальные окна с данными о заказе и с деталями ингредиента
-* Создано инфраструктурное окружение с помощью Webpack.
-* Настроено взаимодействие с сервером.
+## Implemented Features:
+* Ability to select items and add them to the cart
+* Remove items from the cart
+* Calculation of the total cost of the burger
+* Modal windows with order details and ingredient details
+* Created an infrastructure environment using Webpack
+* Configured server interaction
 
-## Использованные технологии:
+## Used technologies:
 * HTML, CSS
 * JavaScript
 * JSX

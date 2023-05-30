@@ -7,6 +7,7 @@
   text-align: center;
   gap: 4px;
   min-height: 208px;
+  cursor: pointer;
 }
 
 .price {

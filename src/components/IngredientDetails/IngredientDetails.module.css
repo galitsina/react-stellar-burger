@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calories__grid {
+  display: grid;
+  grid-template-columns: 120px repeat(3, 112px);
+  gap: 8px 20px;
+  justify-items: center;
+  align-items: center;
+}
