@@ -24,12 +24,8 @@ const IngredientGroup = ({ title, ingredients }) => {
     setIngredient(undefined)
   }
 
-  const ingredientDetails = (
-    <IngredientDetails ingredient={ingredient} />
-  )
-
   const modal = (
-    <Modal closeModal={handleCloseModal} component={ingredientDetails}>Детали ингредиента</Modal>
+    <Modal closeModal={handleCloseModal} component={<IngredientDetails ingredient={ingredient} />}>Детали ингредиента</Modal>
   )
 
   return (

@@ -26,7 +26,7 @@ const Modal = ({ component, closeModal, children }) => {
   }
 
   return ReactDOM.createPortal(
-    (<>
+    (<div className={ModalStyles.fadeIn}>
       <ModalOverlay />
       <section className={ModalStyles.modal} onClick={handleClose}>
         <div className={ModalStyles.container}>
@@ -41,7 +41,7 @@ const Modal = ({ component, closeModal, children }) => {
           {component}
         </div>
       </section>
-    </>
+    </div>
     ), modalRoot)
 }
 

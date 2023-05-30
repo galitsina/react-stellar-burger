@@ -25,9 +25,8 @@ const BurgerConstructor = (props) => {
     setOpen(false);
   }
 
-  const orderDetails = (<OrderDetails orderId='034536'/>)
   const modal = (
-    <Modal closeModal={handleCloseModal} component={orderDetails} />
+    <Modal closeModal={handleCloseModal} component={<OrderDetails orderId='034536'/>} />
   )
   return (
     <section className={`${constructorStyles.section} pt-25 pl-4`}>
@@ -80,7 +79,7 @@ const BurgerConstructor = (props) => {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired
+  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
 }
 
 export default BurgerConstructor;

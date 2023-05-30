@@ -22,7 +22,7 @@ const BurgerIngredient = ({ingredient: {image, price, name, _id}, openModal}) =>
 }
 
 BurgerIngredient.propTypes = {
-  ingredient: ingredientPropType,
+  ingredient: ingredientPropType.isRequired,
   openModal: PropTypes.func.isRequired
 };
 
