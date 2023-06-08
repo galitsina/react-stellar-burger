@@ -9,7 +9,16 @@ export const getIngredients = () => {
     .then(checkResponse)
 }
 
-// export const sendOrder = () => {
-//   return fetch(`${BURGER_API_URL}/orders`)
-//   .then(checkResponse)
-// }
+export const sendOrder = (idArr) => {
+  return fetch(`${BURGER_API_URL}/orders`, {
+    method: 'POST',
+    body: JSON.stringify({
+      ingredients: ["643d69a5c3f7b9001cfa093c", "643d69a5c3f7b9001cfa093e"]
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8'
+    }
+  })
+    .then(checkResponse)
+}
+

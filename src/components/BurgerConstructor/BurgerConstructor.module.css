@@ -12,6 +12,10 @@
   gap: 16px;
 }
 
+.empty__constructor {
+  min-height: 656px;
+}
+
 .scroll {
   height: 464px;
   overflow: scroll;
