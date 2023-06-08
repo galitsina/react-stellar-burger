@@ -14,6 +14,8 @@ function reducer(state = costInitialState, action) {
       return { count: state.count + action.payload };
     case 'DECREASE_COST':
       return { count: state.count - action.payload };
+    case 'RESET_COST':
+      return costInitialState;
     default:
       return state;
   }

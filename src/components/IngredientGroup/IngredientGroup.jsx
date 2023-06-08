@@ -11,8 +11,8 @@ const IngredientGroup = ({ title, ingredients }) => {
   const [open, setOpen] = React.useState(false);
   const [ingredient, setIngredient] = React.useState(undefined);
   //created context included clicked ingredients:
-  const {clickedIngredients, setClickedIngredients}  = React.useContext(ClickedIngredientsContext);
-  const {costState, costDispatcher} = React.useContext(CostContext);
+  const { clickedIngredients, setClickedIngredients } = React.useContext(ClickedIngredientsContext);
+  const { costState, costDispatcher } = React.useContext(CostContext);
 
   const handleOpenModal = (id) => {
     //find clicked card by id
@@ -32,9 +32,12 @@ const IngredientGroup = ({ title, ingredients }) => {
     const isBun = clickedIngredients.some((item) => {
       return item.type === 'bun';
     })
+
     // if we have bun in context - do nothing
     // else push new item to original array and clone original array to force react to rerender App:
-    if((card.type === 'bun') && isBun) {
+    if ((card.type === 'bun') && isBun) {
+      return
+    } else if ((card.type !== 'bun') && !isBun) {
       return
     } else {
       clickedIngredients.push(card);
@@ -42,10 +45,10 @@ const IngredientGroup = ({ title, ingredients }) => {
     }
     let cardPrice = card.price;
     //when clicked save count in context:
-    if(card.type === 'bun') {
+    if (card.type === 'bun') {
       cardPrice *= 2;
     }
-    costDispatcher({type: 'INCREASE_COST', payload: cardPrice});
+    costDispatcher({ type: 'INCREASE_COST', payload: cardPrice });
 
   }
 
@@ -55,7 +58,9 @@ const IngredientGroup = ({ title, ingredients }) => {
   }
 
   const modal = (
-    <Modal closeModal={handleCloseModal} component={<IngredientDetails ingredient={ingredient} />}>Детали ингредиента</Modal>
+    <Modal closeModal={handleCloseModal} title='Детали ингредиента'>
+      <IngredientDetails ingredient={ingredient} />
+    </Modal>
   )
 
   return (
@@ -65,7 +70,7 @@ const IngredientGroup = ({ title, ingredients }) => {
         {ingredients.map(item => (
           <BurgerIngredient ingredient={item} key={item._id} openModal={handleAddIngredient} />
         ))}
-         {open && modal}
+        {open && modal}
       </div>
     </div>
   )

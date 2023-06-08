@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './BurgerConstructor.module.css';
 import { splitIngredients } from '../../utils/IngredientsUtils';
@@ -7,11 +7,11 @@ import { splitIngredients } from '../../utils/IngredientsUtils';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import { ClickedIngredientsContext, CostContext } from '../../services/apiContext';
-import {sendOrder} from '../../utils/BurgerApi';
+import { sendOrder } from '../../utils/BurgerApi';
 
 const BurgerConstructor = () => {
   const { clickedIngredients, setClickedIngredients } = useContext(ClickedIngredientsContext);
-  const {costState, costDispatcher} = React.useContext(CostContext);
+  const { costState, costDispatcher } = React.useContext(CostContext);
 
   //array of ids of each ingredient in context:
   const idArr = clickedIngredients.map(ingredient => ingredient._id);
@@ -22,7 +22,7 @@ const BurgerConstructor = () => {
   const notBuns = sauces.concat(fillings);
 
   const [open, setOpen] = useState(false);
-  const [state, setState] =  useState({
+  const [state, setState] = useState({
     isLoading: false,
     hasError: false,
     orderNumber: 0,
@@ -31,19 +31,18 @@ const BurgerConstructor = () => {
   const handleOpenModal = () => {
     setOpen(true);
 
-    const getData = () => {
-      setState({ ...state, hasError: false, isLoading: true })
-      sendOrder(idArr)
+    setState({ ...state, hasError: false, isLoading: true })
+    sendOrder(idArr)
       .then(res => {
-        console.log(res)
-        setState({ ...state, isLoading: false, orderNumber: res.order.number })
+        setState({ ...state, isLoading: false, orderNumber: res.order.number });
+        setClickedIngredients([]);
+        costDispatcher({ type: 'RESET_COST' });
       })
       .catch(err => {
         console.log(`Произошла ошибка: ${err}`)
         setState({ ...state, hasError: true, isLoading: false })
       })
-    }
-    getData();
+
   }
 
   const handleCloseModal = () => {
@@ -51,11 +50,13 @@ const BurgerConstructor = () => {
   }
 
   const deleteIngredeint = (price) => {
-    costDispatcher({type: 'DECREASE_COST', payload: price});
+    costDispatcher({ type: 'DECREASE_COST', payload: price });
   }
 
   const modal = (
-    <Modal closeModal={handleCloseModal} component={<OrderDetails orderId={state.orderNumber} />} />
+    <Modal closeModal={handleCloseModal} >
+      <OrderDetails orderId={state.orderNumber} />
+    </Modal>
   )
   return (
     <section className={`${constructorStyles.section} pt-25 pl-4`}>
@@ -85,7 +86,7 @@ const BurgerConstructor = () => {
                     text={item.name}
                     price={item.price}
                     thumbnail={item.image}
-                    handleClose = {deleteIngredeintWrapper}
+                    handleClose={deleteIngredeintWrapper}
                   />
                 </div>
               )
@@ -105,11 +106,11 @@ const BurgerConstructor = () => {
           <p className="text text_type_digits-medium">{costState.count}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <div onClick={handleOpenModal}>
-          <Button htmlType="button" type="primary" size="large">
+
+          <Button htmlType="button" type="primary" size="large" disabled={!clickedIngredients.some(item => {return item.type === 'bun'})} onClick={handleOpenModal}>
             Оформить заказ
           </Button>
-        </div>
+
       </div>
       {open && modal}
     </section>
