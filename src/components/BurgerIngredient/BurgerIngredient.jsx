@@ -10,7 +10,7 @@ const BurgerIngredient = ({ingredient: {image, price, name, _id}, openModal}) =>
   }
   return (
     <div className={ingredientStyles.ingredient} onClick={getID}>
-      <img src={image} className="ml-4 mr-4"/>
+      <img src={image} alt={name} className="ml-4 mr-4"/>
       <div className={ingredientStyles.price}>
         <p className="text text_type_digits-default">{price}</p>
         <CurrencyIcon type="primary" />

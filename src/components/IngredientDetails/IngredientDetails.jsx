@@ -4,7 +4,7 @@ import {ingredientPropType} from '../../utils/PropTypes';
 const IngredientDetails = ({ingredient: {image_large, name, calories, proteins, fat, carbohydrates}}) => {
   return (
     <div className={`${IngredientDetailsStyles.container} mb-15`}>
-      <img src={image_large} />
+      <img src={image_large} alt={name}/>
       <p className="text text_type_main-medium mt-4">{name}</p>
       <div className={`${IngredientDetailsStyles.calories__grid} mt-8`}>
         <p className="text text_type_main-default text_color_inactive">Калории,ккал</p>

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const modalRoot = document.getElementById('react-modals');
 
-const Modal = ({ component, closeModal, children }) => {
+const Modal = ({ closeModal, title, children }) => {
   React.useEffect( () => {
     document.addEventListener('keydown', handleClose);
     return () => {
@@ -32,13 +32,13 @@ const Modal = ({ component, closeModal, children }) => {
         <div className={ModalStyles.container}>
           <div className={`${ModalStyles.title__container} mt-10 mr-10 ml-10`}>
             <p className="text text_type_main-large">
-              {children}
+              {title}
             </p>
             <button className={ModalStyles.close_icon} onClick={closeModal}>
               <CloseIcon type="primary" />
             </button>
           </div>
-          {component}
+      {children}
         </div>
       </section>
     </div>
@@ -46,7 +46,6 @@ const Modal = ({ component, closeModal, children }) => {
 }
 
 Modal.propTypes = {
-  component: PropTypes.node.isRequired,
   closeModal: PropTypes.func.isRequired
 };
 

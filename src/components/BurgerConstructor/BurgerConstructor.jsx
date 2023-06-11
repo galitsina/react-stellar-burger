@@ -1,85 +1,124 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './BurgerConstructor.module.css';
 import { splitIngredients } from '../../utils/IngredientsUtils';
-import { ingredientPropType } from '../../utils/PropTypes';
-import PropTypes from 'prop-types';
+//import { ingredientPropType } from '../../utils/PropTypes';
+//import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
+import { ClickedIngredientsContext, CostContext } from '../../services/apiContext';
+import { sendOrder } from '../../utils/BurgerApi';
 
-const BurgerConstructor = (props) => {
-  const ingredients = splitIngredients(props.data);
+const BurgerConstructor = () => {
+  const { clickedIngredients, setClickedIngredients } = useContext(ClickedIngredientsContext);
+  const { costState, costDispatcher } = React.useContext(CostContext);
+
+  //array of ids of each ingredient in context:
+  const idArr = clickedIngredients.map(ingredient => ingredient._id);
+  const ingredients = splitIngredients(clickedIngredients);
   const buns = ingredients.buns;
-  const randIndex = Math.floor(Math.random() * buns.length);
-  const randBun = buns[randIndex];
   const sauces = ingredients.sauces;
   const fillings = ingredients.fillings;
   const notBuns = sauces.concat(fillings);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [state, setState] = useState({
+    isLoading: false,
+    hasError: false,
+    orderNumber: 0,
+  })
+
   const handleOpenModal = () => {
     setOpen(true);
+
+    setState({ ...state, hasError: false, isLoading: true })
+    sendOrder(idArr)
+      .then(res => {
+        setState({ ...state, isLoading: false, orderNumber: res.order.number });
+        setClickedIngredients([]);
+        costDispatcher({ type: 'RESET_COST' });
+      })
+      .catch(err => {
+        console.log(`Произошла ошибка: ${err}`)
+        setState({ ...state, hasError: true, isLoading: false })
+      })
+
   }
 
   const handleCloseModal = () => {
     setOpen(false);
   }
 
+  const deleteIngredeint = (price) => {
+    costDispatcher({ type: 'DECREASE_COST', payload: price });
+  }
+
   const modal = (
-    <Modal closeModal={handleCloseModal} component={<OrderDetails orderId='034536'/>} />
+    <Modal closeModal={handleCloseModal} >
+      <OrderDetails orderId={state.orderNumber} />
+    </Modal>
   )
   return (
     <section className={`${constructorStyles.section} pt-25 pl-4`}>
-      <div className={constructorStyles.burger__constructor}>
-        <ConstructorElement
-          type="top"
-          isLocked={true}
-          text={`${randBun.name} (верх)`}
-          price={randBun.price}
-          thumbnail={randBun.image}
-          extraClass="ml-8"
-        />
-        <div className={`${constructorStyles.scroll} custom-scroll pr-1`}>
-          {notBuns.map(item => {
-            return (
-              <div className={constructorStyles.not__buns} key={item._id}>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                />
-              </div>
-            )
-          })}
-        </div>
-        <ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={`${randBun.name} (низ)`}
-          price={randBun.price}
-          thumbnail={randBun.image}
-          extraClass="ml-8"
-        />
-      </div>
+      {Boolean(clickedIngredients.length) ?
+        <div className={constructorStyles.burger__constructor}>
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={`${buns[0].name} (верх)`}
+            price={buns[0].price}
+            thumbnail={buns[0].image}
+            extraClass="ml-8"
+          />
+          <div className={`${constructorStyles.scroll} custom-scroll pr-1`}>
+            {notBuns.map(item => {
+              const deleteIngredeintWrapper = () => {
+                deleteIngredeint(item.price);
+                const arrWithoutClickedIngredient = clickedIngredients.filter(clickedItem => {
+                  return clickedItem._id !== item._id;
+                })
+                setClickedIngredients(arrWithoutClickedIngredient)
+              }
+              return (
+                <div className={constructorStyles.not__buns} key={item._id}>
+                  <DragIcon type="primary" />
+                  <ConstructorElement
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                    handleClose={deleteIngredeintWrapper}
+                  />
+                </div>
+              )
+            })}
+          </div>
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={`${buns[0].name} (низ)`}
+            price={buns[0].price}
+            thumbnail={buns[0].image}
+            extraClass="ml-8"
+          />
+        </div> : <div className={constructorStyles.empty__constructor}></div>}
       <div className={`${constructorStyles.ordering} pr-6`}>
         <div className={constructorStyles.total}>
-          <p className="text text_type_digits-medium">610</p>
+          <p className="text text_type_digits-medium">{costState.count}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <div onClick={handleOpenModal}>
-          <Button htmlType="button" type="primary" size="large">
+
+          <Button htmlType="button" type="primary" size="large" disabled={!clickedIngredients.some(item => {return item.type === 'bun'})} onClick={handleOpenModal}>
             Оформить заказ
           </Button>
-        </div>
+
       </div>
       {open && modal}
     </section>
   )
 }
 
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
-}
+// BurgerConstructor.propTypes = {
+//   data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
+// }
 
 export default BurgerConstructor;
