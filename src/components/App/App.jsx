@@ -1,68 +1,36 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
+import { Loader } from '../Loader/Loader';
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import { getIngredients } from '../../utils/BurgerApi';
-import { ClickedIngredientsContext, CostContext } from '../../services/apiContext';
-
-//created reducer for cost calculation:
-const costInitialState = { count: 0 };
-function reducer(state = costInitialState, action) {
-  switch (action.type) {
-    case 'INCREASE_COST':
-      return { count: state.count + action.payload };
-    case 'DECREASE_COST':
-      return { count: state.count - action.payload };
-    case 'RESET_COST':
-      return costInitialState;
-    default:
-      return state;
-  }
-}
+import { useSelector, useDispatch } from 'react-redux';
+import { getItems } from '../../services/actions/index';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const App = () => {
-  const [state, setState] = useState({
-    isLoading: false,
-    hasError: false,
-    data: []
-  })
-  const { isLoading, hasError, data } = state;
-
-  const [clickedIngredients, setClickedIngredients] = useState([]);
-
-  //created costState by useREducer:
-  const [costState, costDispatcher] = useReducer(reducer, costInitialState, undefined);
-
-  useEffect(() => {
-    const getData = () => {
-      setState({ ...state, hasError: false, isLoading: true })
-      getIngredients()
-        .then((res) => {
-          setState({ ...state, isLoading: false, data: res.data })
-        })
-        .catch((err) => {
-          console.log(`Произошла ошибка: ${err}`);
-          setState({ ...state, hasError: true, isLoading: false })
-        })
-    }
-    getData()
-  }, [])
+  const { items, itemsRequest } = useSelector(state => state.allIngredients);
+  const dispatch = useDispatch();
+  useEffect(
+    () => {
+      dispatch(getItems());
+    },
+    [dispatch]
+  );
 
   return (
     <div className={styles.app}>
-      <ClickedIngredientsContext.Provider value={{ clickedIngredients, setClickedIngredients }}>
-        <CostContext.Provider value={{ costState, costDispatcher }}>
-          <AppHeader />
-          {!isLoading && !hasError && Boolean(data.length) &&
-            <main className={styles.main}>
-              <BurgerIngredients data={data} />
-              <BurgerConstructor />
-            </main>}
-        </CostContext.Provider>
-      </ClickedIngredientsContext.Provider>
+      <AppHeader />
+      <DndProvider backend={HTML5Backend}>
+        <main className={styles.main}>
+          {itemsRequest ? (<Loader />) : (<BurgerIngredients data={items} />)}
+          <BurgerConstructor />
+        </main>
+      </DndProvider>
     </div>
   );
 }
 
 export default App;
+

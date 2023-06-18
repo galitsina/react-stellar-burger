@@ -1,92 +1,97 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Loader } from '../Loader/Loader';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './BurgerConstructor.module.css';
-import { splitIngredients } from '../../utils/IngredientsUtils';
 //import { ingredientPropType } from '../../utils/PropTypes';
 //import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import { ClickedIngredientsContext, CostContext } from '../../services/apiContext';
-import { sendOrder } from '../../utils/BurgerApi';
+import { getOrder } from '../../services/actions/index';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from "react-dnd";
+import { ADD_INGREDIENT, ADD_BUN, DECREASE_INGREDIENT, CLEAR_ITEMS } from '../../services/actions/index'
+import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {
-  const { clickedIngredients, setClickedIngredients } = useContext(ClickedIngredientsContext);
-  const { costState, costDispatcher } = React.useContext(CostContext);
-
-  //array of ids of each ingredient in context:
-  const idArr = clickedIngredients.map(ingredient => ingredient._id);
-  const ingredients = splitIngredients(clickedIngredients);
-  const buns = ingredients.buns;
-  const sauces = ingredients.sauces;
-  const fillings = ingredients.fillings;
-  const notBuns = sauces.concat(fillings);
+  const { orderNumber, orderRequest } = useSelector(state => state.order);
+  const { selectedItems, bun } = useSelector(state => state.selectedIngredients);
+  const dispatch = useDispatch();
+  const idArr = selectedItems.map(ingredient => ingredient._id);
+  if (bun) { idArr.push(bun._id) }
 
   const [open, setOpen] = useState(false);
-  const [state, setState] = useState({
-    isLoading: false,
-    hasError: false,
-    orderNumber: 0,
+
+  const [, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(item) {
+      if (item.type === 'bun') {
+        dispatch({
+          type: ADD_BUN,
+          bun: item
+        })
+      } else {
+        const uniqueItem = {...item, key: uuidv4()}
+        dispatch({
+          type: ADD_INGREDIENT,
+          ingredient: uniqueItem
+        })
+      }
+    }
   })
+  const totalPrice = useMemo(() => {
+    const ingredientsPrice = selectedItems.reduce((acc, item) => {
+      return acc + item.price
+    }, 0)
+    const bunPrice = bun? bun.price * 2 : 0;
+    return bunPrice + ingredientsPrice
+  }, [selectedItems, bun])
 
   const handleOpenModal = () => {
     setOpen(true);
-
-    setState({ ...state, hasError: false, isLoading: true })
-    sendOrder(idArr)
-      .then(res => {
-        setState({ ...state, isLoading: false, orderNumber: res.order.number });
-        setClickedIngredients([]);
-        costDispatcher({ type: 'RESET_COST' });
-      })
-      .catch(err => {
-        console.log(`Произошла ошибка: ${err}`)
-        setState({ ...state, hasError: true, isLoading: false })
-      })
-
+    dispatch(getOrder(idArr));
   }
 
   const handleCloseModal = () => {
     setOpen(false);
-  }
-
-  const deleteIngredeint = (price) => {
-    costDispatcher({ type: 'DECREASE_COST', payload: price });
+    dispatch({
+      type: CLEAR_ITEMS
+    })
   }
 
   const modal = (
     <Modal closeModal={handleCloseModal} >
-      <OrderDetails orderId={state.orderNumber} />
+      {orderRequest ? (<Loader />) : (<OrderDetails orderId={orderNumber} />)}
     </Modal>
   )
+
   return (
-    <section className={`${constructorStyles.section} pt-25 pl-4`}>
-      {Boolean(clickedIngredients.length) ?
-        <div className={constructorStyles.burger__constructor}>
+    <section className={`${constructorStyles.section} pt-25 pl-4`} >
+      {Boolean(bun) ?
+        <div className={constructorStyles.burger__constructor} ref={dropTarget}>
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={`${buns[0].name} (верх)`}
-            price={buns[0].price}
-            thumbnail={buns[0].image}
+            text={`${bun.name} (верх)`}
+            price={bun.price}
+            thumbnail={bun.image}
             extraClass="ml-8"
           />
           <div className={`${constructorStyles.scroll} custom-scroll pr-1`}>
-            {notBuns.map(item => {
-              const deleteIngredeintWrapper = () => {
-                deleteIngredeint(item.price);
-                const arrWithoutClickedIngredient = clickedIngredients.filter(clickedItem => {
-                  return clickedItem._id !== item._id;
+            {selectedItems.map(item => {
+              const deleteIngredeint = () => {
+                dispatch({
+                  type: DECREASE_INGREDIENT,
+                  ingredient: item
                 })
-                setClickedIngredients(arrWithoutClickedIngredient)
               }
               return (
-                <div className={constructorStyles.not__buns} key={item._id}>
+                <div className={constructorStyles.not__buns} key={item.key}>
                   <DragIcon type="primary" />
                   <ConstructorElement
                     text={item.name}
                     price={item.price}
                     thumbnail={item.image}
-                    handleClose={deleteIngredeintWrapper}
+                    handleClose={deleteIngredeint}
                   />
                 </div>
               )
@@ -95,21 +100,21 @@ const BurgerConstructor = () => {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={`${buns[0].name} (низ)`}
-            price={buns[0].price}
-            thumbnail={buns[0].image}
+            text={`${bun.name} (низ)`}
+            price={bun.price}
+            thumbnail={bun.image}
             extraClass="ml-8"
           />
-        </div> : <div className={constructorStyles.empty__constructor}></div>}
+        </div> : <div className={constructorStyles.empty__constructor} ref={dropTarget}></div>}
       <div className={`${constructorStyles.ordering} pr-6`}>
         <div className={constructorStyles.total}>
-          <p className="text text_type_digits-medium">{costState.count}</p>
+          <p className="text text_type_digits-medium">{totalPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
 
-          <Button htmlType="button" type="primary" size="large" disabled={!clickedIngredients.some(item => {return item.type === 'bun'})} onClick={handleOpenModal}>
-            Оформить заказ
-          </Button>
+        <Button htmlType="button" type="primary" size="large" disabled={!Boolean(bun)} onClick={handleOpenModal}>
+          Оформить заказ
+        </Button>
 
       </div>
       {open && modal}
