@@ -41,6 +41,9 @@ const BurgerIngredients = (props, ref) => {
     }
   }, [inViewBun, inViewSauce, inViewFilling])
 
+
+
+
   const ingredientQty = {} //obj with key=id, value=qty of each ingredient
   const bunQty = bun ? { [bun._id]: 1} : {}
   for (let i = 0; i < selectedItems.length; i++) {

@@ -10,7 +10,8 @@ import {
   DECREASE_INGREDIENT,
   CURRENT_ITEM,
   CLEAR_CURRENT_ITEM,
-  CLEAR_ITEMS
+  CLEAR_ITEMS,
+  MOVE_ITEMS
 } from '../actions/index';
 
 const initialItemsState = {
@@ -117,6 +118,16 @@ export const selectedIngredientsReducer = (state = initialSelectedState, action)
         ...state,
         selectedItems: [],
         bun: null
+      }
+    }
+    case MOVE_ITEMS: {
+      const dragItem = state.selectedItems[action.dragIndex];
+      const newItems = [...state.selectedItems];
+      newItems.splice(action.dragIndex, 1);
+      newItems.splice(action.hoverIndex, 0, dragItem);
+      return {
+        ...state,
+        selectedItems: newItems
       }
     }
     default: {

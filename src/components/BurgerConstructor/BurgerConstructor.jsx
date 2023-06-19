@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Loader } from '../Loader/Loader';
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import BurgerConstructorIngredient from '../BurgerConstructorIngredient/BurgerConstructorIngredient';
 import constructorStyles from './BurgerConstructor.module.css';
 //import { ingredientPropType } from '../../utils/PropTypes';
 //import PropTypes from 'prop-types';
@@ -9,7 +10,7 @@ import OrderDetails from '../OrderDetails/OrderDetails';
 import { getOrder } from '../../services/actions/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
-import { ADD_INGREDIENT, ADD_BUN, DECREASE_INGREDIENT, CLEAR_ITEMS } from '../../services/actions/index'
+import { ADD_INGREDIENT, ADD_BUN, CLEAR_ITEMS } from '../../services/actions/index';
 import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {
@@ -29,8 +30,8 @@ const BurgerConstructor = () => {
           type: ADD_BUN,
           bun: item
         })
-      } else {
-        const uniqueItem = {...item, key: uuidv4()}
+      } else if (bun) {
+        const uniqueItem = { ...item, key: uuidv4() }
         dispatch({
           type: ADD_INGREDIENT,
           ingredient: uniqueItem
@@ -42,7 +43,7 @@ const BurgerConstructor = () => {
     const ingredientsPrice = selectedItems.reduce((acc, item) => {
       return acc + item.price
     }, 0)
-    const bunPrice = bun? bun.price * 2 : 0;
+    const bunPrice = bun ? bun.price * 2 : 0;
     return bunPrice + ingredientsPrice
   }, [selectedItems, bun])
 
@@ -77,25 +78,8 @@ const BurgerConstructor = () => {
             extraClass="ml-8"
           />
           <div className={`${constructorStyles.scroll} custom-scroll pr-1`}>
-            {selectedItems.map(item => {
-              const deleteIngredeint = () => {
-                dispatch({
-                  type: DECREASE_INGREDIENT,
-                  ingredient: item
-                })
-              }
-              return (
-                <div className={constructorStyles.not__buns} key={item.key}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                    handleClose={deleteIngredeint}
-                  />
-                </div>
-              )
-            })}
+            {selectedItems.map((item, index) => (<BurgerConstructorIngredient ingredient={item} key={item.key} index={index}/>)
+            )}
           </div>
           <ConstructorElement
             type="bottom"
