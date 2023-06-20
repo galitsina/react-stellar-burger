@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { ingredientPropType } from '../../utils/PropTypes';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrag, useDrop } from "react-dnd";
-import { DECREASE_INGREDIENT, MOVE_ITEMS } from '../../services/actions/index';
+import { DECREASE_INGREDIENT, MOVE_ITEMS } from '../../services/actions/selectedIngredients';
 
 const BurgerConstructorIngredient = ({ ingredient, index }) => {
   const ref = useRef(null);

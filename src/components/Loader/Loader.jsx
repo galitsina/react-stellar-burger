@@ -1,11 +1,13 @@
 import ClipLoader from "react-spinners/ClipLoader";
-import { useState, CSSProperties } from "react";
+import { useState } from "react";
 
 const override = {
   display: "block",
   margin: "0 auto",
   borderColor: "red",
 };
+
+const COLOR = "#00BFFF";
 
 export const Loader = () => {
   const [loading, setLoading] = useState(true);
@@ -14,7 +16,7 @@ export const Loader = () => {
     <div>
       <ClipLoader
         size={100}
-        color={"#00BFFF"}
+        color={COLOR}
         loading={loading}
         css={override}
       />

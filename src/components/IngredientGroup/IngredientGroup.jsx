@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useSelector, useDispatch } from 'react-redux';
-import { CURRENT_ITEM, CLEAR_CURRENT_ITEM } from '../../services/actions/index';
+import { CURRENT_ITEM, CLEAR_CURRENT_ITEM } from '../../services/actions/currentIngredient';
 
 const IngredientGroup = React.forwardRef(({ title, ingredients, ingredientQty }, ref) => {
   const [open, setOpen] = React.useState(false);

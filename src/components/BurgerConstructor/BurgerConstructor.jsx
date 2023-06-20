@@ -7,10 +7,10 @@ import constructorStyles from './BurgerConstructor.module.css';
 //import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import { getOrder } from '../../services/actions/index';
+import { getOrder } from '../../services/actions/order';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
-import { ADD_INGREDIENT, ADD_BUN, CLEAR_ITEMS } from '../../services/actions/index';
+import { ADD_INGREDIENT, ADD_BUN, CLEAR_ITEMS } from '../../services/actions/selectedIngredients';
 import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {
@@ -18,7 +18,10 @@ const BurgerConstructor = () => {
   const { selectedItems, bun } = useSelector(state => state.selectedIngredients);
   const dispatch = useDispatch();
   const idArr = selectedItems.map(ingredient => ingredient._id);
-  if (bun) { idArr.push(bun._id) }
+  if (bun) {
+    idArr.push(bun._id);
+    idArr.unshift(bun._id);
+   }
 
   const [open, setOpen] = useState(false);
 
