@@ -1,0 +1,2 @@
+export const CURRENT_ITEM = 'CURRENT_ITEM';
+export const CLEAR_CURRENT_ITEM = 'CLEAR_CURRENT_ITEM';
