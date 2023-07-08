@@ -8,8 +8,9 @@ import PropTypes from 'prop-types';
 import IngredientGroup from '../IngredientGroup/IngredientGroup';
 import { useInView } from 'react-intersection-observer';
 
-const BurgerIngredients = (props, ref) => {
+const BurgerIngredients = (ref) => {
   const { selectedItems, bun } = useSelector(state => state.selectedIngredients);
+  const { items, itemsRequest } = useSelector(state => state.allIngredients);
 
   const Tabs = useMemo(() => {
     return {
@@ -19,7 +20,7 @@ const BurgerIngredients = (props, ref) => {
     }
   }, []);
   const [current, setCurrent] = React.useState(Tabs.BUN);
-  const { buns, sauces, fillings } = splitIngredients(props.data);
+  const { buns, sauces, fillings } = splitIngredients(items);
 
   const { ref: refBun, inView: inViewBun } = useInView({
     threshold: 0
@@ -74,8 +75,8 @@ const BurgerIngredients = (props, ref) => {
   )
 }
 
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
-}
+// BurgerIngredients.propTypes = {
+//   data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
+// }
 
 export default BurgerIngredients;
