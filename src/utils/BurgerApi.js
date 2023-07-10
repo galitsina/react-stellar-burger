@@ -5,7 +5,8 @@ const checkResponse = res => {
 }
 
 const request = (endpoint, options) => {
-  return fetch(`${BURGER_API_URL}/${endpoint}`, options).then(checkResponse)
+  return fetch(`${BURGER_API_URL}/${endpoint}`, options)
+  .then(checkResponse)
 }
 
 export const getIngredients = () => {
@@ -28,3 +29,41 @@ export const sendOrder = (ids) => {
   })
 }
 
+export const forgotPassword = (value) => {
+  return request('password-reset', {
+    method: 'POST',
+    body: JSON.stringify({
+      "email": value
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8'
+    }
+  })
+}
+
+export const resetPassword = () => {
+  return request('password-reset/reset', {
+    method: 'POST',
+    body: JSON.stringify({
+      "password": "",
+      "token": ""
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8'
+    }
+  })
+}
+
+export const createUser = () => {
+  return request('auth/register', {
+    method: 'POST',
+    body: JSON.stringify({
+      "email": "test-data@yandex.ru",
+      "password": "password",
+      "name": "Username"
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8'
+    }
+  })
+}
