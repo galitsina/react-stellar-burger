@@ -41,12 +41,12 @@ export const forgotPassword = (value) => {
   })
 }
 
-export const resetPassword = () => {
+export const resetPassword = (password, token) => {
   return request('password-reset/reset', {
     method: 'POST',
     body: JSON.stringify({
-      "password": "",
-      "token": ""
+      "password": password,
+      "token": token
     }),
     headers: {
       'Content-Type': 'application/json; charset=UTF-8'

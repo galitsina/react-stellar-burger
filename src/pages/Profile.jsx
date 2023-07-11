@@ -1,13 +1,25 @@
 import React from 'react';
 import profileStyles from './Profile.module.css';
-import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
 
 export const ProfilePage = () => {
   const [value, setValue] = React.useState('')
+  const [isLoginInputDisabled, setLoginInputDisabled] = React.useState(true)
   const inputRef = React.useRef(null)
   const onIconClick = () => {
     setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
+    setLoginInputDisabled(false)
+  }
+
+  const [emailValue, setEmailValue] = React.useState('bob@example.com')
+  const onChangeEmail = e => {
+    setEmailValue(e.target.value)
+  }
+
+  const [passwordValue, setPasswordValue] = React.useState('password')
+  const onChangePassword = e => {
+    setPasswordValue(e.target.value)
   }
 
   return (
@@ -15,12 +27,12 @@ export const ProfilePage = () => {
       <div className={profileStyles.left_column}>
         <nav>
           <ul className={profileStyles.navigation}>
-            <li><a className="text text_type_main-medium">Профиль</a></li>
-            <li><a className="text text_type_main-medium text_color_inactive">История заказов</a></li>
-            <li><a className="text text_type_main-medium text_color_inactive">Выход</a></li>
+            <li><Link to="/profile" className={`${profileStyles.link} ${profileStyles.active_link} text text_type_main-medium`}>Профиль</Link></li>
+            <li><Link to="/profile/orders" className={`${profileStyles.link} text text_type_main-medium text_color_inactive`}>История заказов</Link></li>
+            <li><Link to="/login" className={`${profileStyles.link} text text_type_main-medium text_color_inactive`}>Выход</Link></li>
           </ul>
         </nav>
-        <p className="text text_type_main-small text_color_inactive mt-20">В этом разделе вы можете изменить свои персональные данные</p>
+        <p className={`${profileStyles.parargraph} text text_type_main-default text_color_inactive mt-20`}>В этом разделе вы можете изменить свои персональные данные</p>
       </div>
       <div>
         <form name="profile" >
@@ -28,9 +40,10 @@ export const ProfilePage = () => {
             type={'text'}
             placeholder={'Имя'}
             onChange={e => setValue(e.target.value)}
-            icon={'CurrencyIcon'}
+            icon={'EditIcon'}
             value={'Марк'}
             name={'name'}
+            disabled={isLoginInputDisabled}
             error={false}
             ref={inputRef}
             onIconClick={onIconClick}
@@ -38,7 +51,20 @@ export const ProfilePage = () => {
             size={'default'}
             extraClass="mb-6"
           />
-
+          <EmailInput
+            onChange={onChangeEmail}
+            value={emailValue}
+            name={'email'}
+            placeholder="Логин"
+            isIcon={true}
+            extraClass="mb-6"
+          />
+          <PasswordInput
+            onChange={onChangePassword}
+            value={passwordValue}
+            name={'password'}
+            icon="EditIcon"
+          />
         </form>
       </div>
     </div>

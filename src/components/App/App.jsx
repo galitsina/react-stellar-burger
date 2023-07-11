@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
-import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { HomePage, LoginPage, RegistrationPage, ForgotPasswordPage, ResetPasswordPage, IngredientPage, ProfilePage } from '../../pages';
-
+import { HomePage, LoginPage, RegistrationPage, ForgotPasswordPage, ResetPasswordPage, IngredientPage, ProfilePage, NotFoundPage } from '../../pages';
+import { OnlyAuth, OnlyUnAuth} from '../ProtectedRoute';
 
 const App = () => {
 
@@ -14,12 +13,13 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegistrationPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>} />} />
+          <Route path="/register" element={<OnlyUnAuth component={<RegistrationPage />} /> } />
+          <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} /> } />
+          <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPasswordPage />} /> } />
           <Route path="/ingredients/:id" element={<IngredientPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile" element={<OnlyAuth component={<ProfilePage/>} />} />
+          <Route path="/notfound" element={<NotFoundPage />} />
 
         </Routes>
       </BrowserRouter>

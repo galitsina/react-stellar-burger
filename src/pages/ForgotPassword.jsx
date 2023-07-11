@@ -1,9 +1,8 @@
 import React from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { forgotPassword } from '../utils/BurgerApi';
-import { useNavigate } from 'react-router-dom';
 
 export const ForgotPasswordPage = () => {
   const [value, setValue] = React.useState('')
@@ -15,7 +14,6 @@ export const ForgotPasswordPage = () => {
   const restorePassword =() => {
     forgotPassword(value)
     .then((res) => {
-      console.log(res)
       if (res && res.success) {
         navigate ('/reset-password')
       } else {
@@ -44,7 +42,7 @@ export const ForgotPasswordPage = () => {
         </Button>
       </form>
       <p className="text text_type_main-default text_color_inactive mt-20">Вспомнили пароль?
-        <Link to="/login" className={`${styles.link} text text_type_main-default`}> Войти</Link>
+        <Link to="/login" state={{checkForgetToReset: 'value'}} className={`${styles.link} text text_type_main-default`}> Войти</Link>
       </p>
     </div>
   )
