@@ -33,3 +33,9 @@
 .parargraph {
   opacity: 0.4;
 }
+
+.buttons {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}

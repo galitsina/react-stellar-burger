@@ -6,8 +6,12 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
   //const isAuthChecked = useSelector((store) => store.user.isAuthChecked);
+  const store = useSelector((store) => store.user);
+  console.log(store)
+
+
   const isAuthChecked = true;
-  const user =null //useSelector((store) => store.user.user);
+  const user = null //useSelector((store) => store.user.user);
   const location = useLocation();
 
   if (!isAuthChecked) {

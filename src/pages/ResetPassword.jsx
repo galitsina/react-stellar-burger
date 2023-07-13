@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
@@ -19,26 +19,32 @@ export const ResetPasswordPage = () => {
   }
 
   const navigate = useNavigate();
-  let { state } = useLocation();
+  let state = useLocation();
+  console.log(state)
 
   const createNewPassword = () => {
-    console.log()
     resetPassword(passwordValue, tokenValue)
-    .then((res) => {
-      console.log(res)
-      if (res && res.success) {
-        navigate('/login')
-      } else {
-        alert('Произошла ошибка при восстановлении пароля');
-      }
-    })
-    .catch((err) => {
-      console.log(`Произошла ошибка: ${err}`);
-    })
+      .then((res) => {
+        if (res && res.success) {
+          navigate('/login')
+        } else {
+          alert('Произошла ошибка при восстановлении пароля');
+        }
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+      })
   }
 
+  //неавторизованный пользователь не может напрямую попасть на маршрут /reset-password
+  //защищаем маршрут /reset-password от пользователей, которые не заходили на маршрут /forgot-password ранее и не вводили почту для восстановления пароля.
+  useEffect(() => {
+    if (state === null || state.state === null || !state.state.checkForgetToReset) {
+      navigate('/forgot-password')
+    }
+  }, [state])
+
   return (
-    state.checkForgetToReset &&
     <div className={styles.main}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
       <form name="reset-password" className={styles.main}>

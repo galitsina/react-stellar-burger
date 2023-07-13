@@ -15,7 +15,7 @@ export const ForgotPasswordPage = () => {
     forgotPassword(value)
     .then((res) => {
       if (res && res.success) {
-        navigate ('/reset-password')
+        navigate ('/reset-password', {state: { checkForgetToReset: true}})
       } else {
         alert('Произошла ошибка при восстановлении пароля')
       }
@@ -42,7 +42,7 @@ export const ForgotPasswordPage = () => {
         </Button>
       </form>
       <p className="text text_type_main-default text_color_inactive mt-20">Вспомнили пароль?
-        <Link to="/login" state={{checkForgetToReset: 'value'}} className={`${styles.link} text text_type_main-default`}> Войти</Link>
+        <Link to="/login" className={`${styles.link} text text_type_main-default`}> Войти</Link>
       </p>
     </div>
   )

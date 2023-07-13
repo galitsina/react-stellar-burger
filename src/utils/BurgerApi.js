@@ -54,13 +54,13 @@ export const resetPassword = (password, token) => {
   })
 }
 
-export const createUser = () => {
+export const createUser = ({email, password, username}) => {
   return request('auth/register', {
     method: 'POST',
     body: JSON.stringify({
-      "email": "test-data@yandex.ru",
-      "password": "password",
-      "name": "Username"
+      "email": email,
+      "password": password,
+      "name": username
     }),
     headers: {
       'Content-Type': 'application/json; charset=UTF-8'

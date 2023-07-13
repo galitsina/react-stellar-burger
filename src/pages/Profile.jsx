@@ -1,6 +1,6 @@
 import React from 'react';
 import profileStyles from './Profile.module.css';
-import { Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 
 export const ProfilePage = () => {
@@ -65,6 +65,14 @@ export const ProfilePage = () => {
             name={'password'}
             icon="EditIcon"
           />
+          <div className={profileStyles.buttons}>
+            <Button htmlType="button" type="secondary" size="medium">
+              Отмена
+            </Button>
+            <Button htmlType="button" type="primary" size="medium">
+              Сохранить
+            </Button>
+          </div>
         </form>
       </div>
     </div>

@@ -19,7 +19,7 @@ const App = () => {
           <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPasswordPage />} /> } />
           <Route path="/ingredients/:id" element={<IngredientPage />} />
           <Route path="/profile" element={<OnlyAuth component={<ProfilePage/>} />} />
-          <Route path="/notfound" element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
 
         </Routes>
       </BrowserRouter>

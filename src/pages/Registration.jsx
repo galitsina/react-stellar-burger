@@ -2,9 +2,11 @@ import React from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
+import {createUser} from '../utils/BurgerApi';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const RegistrationPage = () => {
-  const [value, setValue] = React.useState('')
+  const [nameValue, setNameValue] = React.useState('')
   const inputRef = React.useRef(null)
   const onIconClick = () => {
     setTimeout(() => inputRef.current.focus(), 0)
@@ -21,16 +23,28 @@ export const RegistrationPage = () => {
     setPasswordValue(e.target.value)
   }
 
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createUser({email: emailValue, password: passwordValue, username: nameValue}).then(res => {
+      console.log(res);
+      localStorage.setItem("refreshToken", res.refreshToken);
+      localStorage.setItem("accessToken", res.accessToken);
+      navigate('/');
+    })
+  }
+
   return (
 
     <div className={styles.main}>
       <h1 className="text text_type_main-medium">Регистрация</h1>
-      <form name="registration" className={styles.main}>
+      <form name="registration" className={styles.main} onSubmit={handleSubmit}>
         <Input
           type={'text'}
           placeholder={'Имя'}
-          onChange={e => setValue(e.target.value)}
-          value={value}
+          onChange={e => setNameValue(e.target.value)}
+          value={nameValue}
           name={'name'}
           error={false}
           ref={inputRef}
@@ -53,7 +67,7 @@ export const RegistrationPage = () => {
           name={'password'}
           extraClass="mt-6"
         />
-        <Button htmlType="button" type="primary" size="medium" extraClass="mt-6">
+        <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6">
           Зарегистрироваться
         </Button>
       </form>
