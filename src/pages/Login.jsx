@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../utils/BurgerApi';
+import { GET_USER_SUCCESS } from '../services/actions/autorization';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const LoginPage = () => {
   const [emailValue, setEmailValue] = React.useState('')
@@ -14,11 +17,32 @@ export const LoginPage = () => {
     setPasswordValue(e.target.value)
   }
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('submit')
+    login({ email: emailValue, password: passwordValue })
+      .then(res => {
+        localStorage.setItem("refreshToken", res.refreshToken);
+        localStorage.setItem("accessToken", res.accessToken);
+        navigate('/');
+        dispatch({
+          type: GET_USER_SUCCESS,
+          user: res.user
+        })
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+      })
+  }
+
   return (
 
     <div className={styles.main}>
       <h1 className="text text_type_main-medium">Вход</h1>
-      <form name="login" className={styles.main}>
+      <form name="login" className={styles.main} onSubmit={handleSubmit}>
         <EmailInput
           onChange={onChangeEmail}
           value={emailValue}
@@ -33,7 +57,7 @@ export const LoginPage = () => {
           name={'password'}
           extraClass="mt-6"
         />
-        <Button htmlType="button" type="primary" size="medium" extraClass="mt-6">
+        <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6">
           Войти
         </Button>
       </form>

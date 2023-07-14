@@ -9,8 +9,9 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <AppHeader />
       <BrowserRouter>
+      <AppHeader />
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>} />} />

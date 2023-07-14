@@ -2,8 +2,10 @@ import React from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import {createUser} from '../utils/BurgerApi';
+import { createUser } from '../utils/BurgerApi';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { GET_USER_SUCCESS } from '../services/actions/autorization';
 
 export const RegistrationPage = () => {
   const [nameValue, setNameValue] = React.useState('')
@@ -24,16 +26,27 @@ export const RegistrationPage = () => {
   }
 
   const navigate = useNavigate();
+  //const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUser({email: emailValue, password: passwordValue, username: nameValue}).then(res => {
-      console.log(res);
-      localStorage.setItem("refreshToken", res.refreshToken);
-      localStorage.setItem("accessToken", res.accessToken);
-      navigate('/');
-    })
+    createUser({ email: emailValue, password: passwordValue, username: nameValue })
+      .then(res => {
+        localStorage.setItem("refreshToken", res.refreshToken);
+        localStorage.setItem("accessToken", res.accessToken);
+        navigate('/');
+        dispatch({
+          type: GET_USER_SUCCESS,
+          user: res.user
+        })
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+      })
   }
+
+
 
   return (
 

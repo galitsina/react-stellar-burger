@@ -5,14 +5,14 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   // isAuthChecked это флаг, показывающий что проверка токена произведена
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
-  //const isAuthChecked = useSelector((store) => store.user.isAuthChecked);
-  const store = useSelector((store) => store.user);
-  console.log(store)
+  const isAuthChecked = useSelector((store) => store.user.isAuthChecked);
+  const user = useSelector((store) => store.user.user);
 
-
-  const isAuthChecked = true;
-  const user = null //useSelector((store) => store.user.user);
   const location = useLocation();
+
+  const isRefreshToken = localStorage.getItem("refreshToken");
+  const isAccessToken = localStorage.getItem("accessToken");
+  const isTokensExist = isRefreshToken && isAccessToken;
 
   if (!isAuthChecked) {
     // Запрос еще выполняется
@@ -21,14 +21,14 @@ const Protected = ({ onlyUnAuth = false, component }) => {
     return null;
   }
 
-  if (onlyUnAuth && user) {
+  if (onlyUnAuth && isTokensExist) {
     // Пользователь авторизован, но роут предназначен для неавторизованного пользователя
     // Делаем редирект на главную страницу или на тот адрес, что записан в location.state.from
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from} />;
   }
 
-  if (!onlyUnAuth && !user) {
+  if (!onlyUnAuth && !isTokensExist) {
     return <Navigate to="/login" state={{ from: location }} />;
   }
 

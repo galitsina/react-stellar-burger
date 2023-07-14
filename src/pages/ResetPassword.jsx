@@ -67,7 +67,7 @@ export const ResetPasswordPage = () => {
           size={'default'}
           extraClass="mt-6"
         />
-        <Button htmlType="button" type="primary" size="medium" extraClass="mt-6" onClick={createNewPassword}>
+        <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6" onClick={createNewPassword}>
           Сохранить
         </Button>
       </form>

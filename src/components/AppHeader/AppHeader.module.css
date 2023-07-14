@@ -10,11 +10,15 @@
 
 .header__navigation {
   display: flex;
+
 }
 
 .header__item {
   display: flex;
   align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .header__logo {

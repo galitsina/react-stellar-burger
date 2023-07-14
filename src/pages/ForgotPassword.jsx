@@ -11,33 +11,34 @@ export const ForgotPasswordPage = () => {
   }
   const navigate = useNavigate();
 
-  const restorePassword =() => {
+  const restorePassword = () => {
     forgotPassword(value)
-    .then((res) => {
-      if (res && res.success) {
-        navigate ('/reset-password', {state: { checkForgetToReset: true}})
-      } else {
-        alert('Произошла ошибка при восстановлении пароля')
-      }
-    })
-    .catch((err) => {
-      console.log(`Произошла ошибка: ${err}`);
-    })
+      .then((res) => {
+        if (res && res.success) {
+          navigate('/reset-password', { state: { checkForgetToReset: true } })
+          console.log('reset-password')
+        } else {
+          alert('Произошла ошибка при восстановлении пароля')
+        }
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+      })
   }
 
   return (
     <div className={styles.main}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
       <form name="forgot-password" className={styles.main}>
-      <EmailInput
-        onChange={onChange}
-        value={value}
-        name={'email'}
-        placeholder="Укажите e-mail"
-        isIcon={false}
-        extraClass="mt-6"
-      />
-        <Button htmlType="button" type="primary" size="medium" extraClass="mt-6" onClick={restorePassword}>
+        <EmailInput
+          onChange={onChange}
+          value={value}
+          name={'email'}
+          placeholder="Укажите e-mail"
+          isIcon={false}
+          extraClass="mt-6"
+        />
+        <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6" onClick={restorePassword}>
           Восстановить
         </Button>
       </form>
