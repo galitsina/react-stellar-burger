@@ -32,11 +32,11 @@ const IngredientGroup = React.forwardRef(({ title, ingredients, ingredientQty },
     })
   }
 
-  const modal = (
-    <Modal closeModal={handleCloseModal} title='Детали ингредиента'>
-      <IngredientDetails ingredient={currentItem} />
-    </Modal>
-  )
+  // const modal = (
+  //   <Modal closeModal={handleCloseModal} title='Детали ингредиента'>
+  //     <IngredientDetails ingredient={currentItem} />
+  //   </Modal>
+  // )
 
   return (
     <div ref={ref} className="pt-10">
@@ -45,7 +45,7 @@ const IngredientGroup = React.forwardRef(({ title, ingredients, ingredientQty },
         {ingredients.map(item => (
           <BurgerIngredient qty={ingredientQty[item._id]} ingredient={item} key={item._id} openModal={handleOpenModal} />
         ))}
-        {open && modal}
+        {open }
       </div>
     </div>
   )

@@ -11,12 +11,12 @@ export const ForgotPasswordPage = () => {
   }
   const navigate = useNavigate();
 
-  const restorePassword = () => {
+  const restorePassword = (e) => {
+    e.preventDefault();
     forgotPassword(value)
       .then((res) => {
         if (res && res.success) {
           navigate('/reset-password', { state: { checkForgetToReset: true } })
-          console.log('reset-password')
         } else {
           alert('Произошла ошибка при восстановлении пароля')
         }

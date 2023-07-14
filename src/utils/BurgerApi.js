@@ -45,7 +45,8 @@ export const sendOrder = (ids) => {
       ingredients: ids
     }),
     headers: {
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8',
+      authorization: localStorage.getItem('accessToken')
     }
   })
 }

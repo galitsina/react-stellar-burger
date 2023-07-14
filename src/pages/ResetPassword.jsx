@@ -20,9 +20,9 @@ export const ResetPasswordPage = () => {
 
   const navigate = useNavigate();
   let state = useLocation();
-  console.log(state)
 
-  const createNewPassword = () => {
+  const createNewPassword = (e) => {
+    e.preventDefault();
     resetPassword(passwordValue, tokenValue)
       .then((res) => {
         if (res && res.success) {
