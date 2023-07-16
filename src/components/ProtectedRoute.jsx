@@ -33,7 +33,6 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   }
 
   // !onlyUnAuth && user Пользователь авторизован и роут для авторизованного пользователя
-
   return component;
 };
 

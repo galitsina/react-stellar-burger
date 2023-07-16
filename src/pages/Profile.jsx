@@ -5,36 +5,48 @@ import { Link } from 'react-router-dom';
 import { logout, updateUser, getUser } from '../utils/BurgerApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { CLEAR_USER } from '../services/actions/autorization';
+import { useNavigate } from 'react-router-dom';
 
 export const ProfilePage = () => {
-  const [nameValue, setNameValue] = React.useState('')
-  const [isLoginInputDisabled, setLoginInputDisabled] = React.useState(true)
-  const onIconClick = () => {
-    setLoginInputDisabled(false)
+  const [isLoginInputDisabled, setLoginInputDisabled] = React.useState(true);
+  const [isChangeInput, setChangeInput] = React.useState(false);
+
+  const [nameValue, setNameValue] = React.useState('');
+  const onChangeName = e => {
+    setNameValue(e.target.value);
+    setChangeInput(true);
   }
 
-  const [emailValue, setEmailValue] = React.useState('bob@example.com')
+  const [emailValue, setEmailValue] = React.useState('')
   const onChangeEmail = e => {
-    setEmailValue(e.target.value)
+    setEmailValue(e.target.value);
+    setChangeInput(true);
   }
 
   const [passwordValue, setPasswordValue] = React.useState('******')
   const onChangePassword = e => {
-    setPasswordValue(e.target.value)
+    setPasswordValue(e.target.value);
+    setChangeInput(true);
+  }
+
+  const onIconClick = () => {
+    setLoginInputDisabled(false)
   }
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const exit = (e) => {
     e.preventDefault();
     logout()
-      .then(() => {
+      .then((res) => {
         dispatch({
           type: CLEAR_USER
         });
         //clear tokens
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        navigate('/login');
       })
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
@@ -42,23 +54,24 @@ export const ProfilePage = () => {
   }
 
   useEffect(() => {
+    let isMounted = true;
     getUser()
       .then((res) => {
-        console.log(res);
-        setNameValue(res.user.name);
-        setEmailValue(res.user.email);
+        if (isMounted) {
+          setNameValue(res.user.name);
+          setEmailValue(res.user.email);
+        }
       })
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
       })
+    //clean up
+    return () => { isMounted = false };
   }, [])
 
   const saveUser = (e) => {
     e.preventDefault();
-    updateUser({name: nameValue, email: emailValue, password: passwordValue})
-      .then((res) => {
-        console.log(res);
-      })
+    updateUser({ name: nameValue, email: emailValue, password: passwordValue })
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
       })
@@ -67,14 +80,13 @@ export const ProfilePage = () => {
   const cancelChanges = (e) => {
     e.preventDefault();
     getUser()
-    .then((res) => {
-      console.log(res);
-      setNameValue(res.user.name);
-      setEmailValue(res.user.email);
-    })
-    .catch((err) => {
-      console.log(`Произошла ошибка: ${err}`);
-    })
+      .then((res) => {
+        setNameValue(res.user.name);
+        setEmailValue(res.user.email);
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+      })
   }
 
   return (
@@ -94,7 +106,7 @@ export const ProfilePage = () => {
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={e => setNameValue(e.target.value)}
+            onChange={onChangeName}
             icon={'EditIcon'}
             value={nameValue}
             name={'name'}
@@ -119,14 +131,14 @@ export const ProfilePage = () => {
             name={'password'}
             icon="EditIcon"
           />
-          <div className={profileStyles.buttons}>
+          {isChangeInput && <div className={profileStyles.buttons}>
             <Button htmlType="button" type="secondary" size="medium" onClick={cancelChanges}>
               Отмена
             </Button>
             <Button htmlType="submit" type="primary" size="medium" onClick={saveUser}>
               Сохранить
             </Button>
-          </div>
+          </div>}
         </form>
       </div>
     </div>

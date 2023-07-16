@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../utils/BurgerApi';
 import { GET_USER_SUCCESS } from '../services/actions/autorization';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from "react-router-dom";
 
 export const LoginPage = () => {
   const [emailValue, setEmailValue] = React.useState('')
@@ -19,15 +20,18 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
+  console.log(location.state)
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('submit')
     login({ email: emailValue, password: passwordValue })
       .then(res => {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
-        navigate('/');
+        //navigate( '/');
+        navigate(location.state.from.pathname || '/');
+
         dispatch({
           type: GET_USER_SUCCESS,
           user: res.user

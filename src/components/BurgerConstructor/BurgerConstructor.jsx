@@ -3,8 +3,6 @@ import { Loader } from '../Loader/Loader';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorIngredient from '../BurgerConstructorIngredient/BurgerConstructorIngredient';
 import constructorStyles from './BurgerConstructor.module.css';
-//import { ingredientPropType } from '../../utils/PropTypes';
-//import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import { getOrder } from '../../services/actions/order';
@@ -12,11 +10,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
 import { ADD_INGREDIENT, ADD_BUN, CLEAR_ITEMS } from '../../services/actions/selectedIngredients';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 const BurgerConstructor = () => {
   const { orderNumber, orderRequest } = useSelector(state => state.order);
   const { selectedItems, bun } = useSelector(state => state.selectedIngredients);
+  const isUserAuth = Boolean(localStorage.getItem("refreshToken") && localStorage.getItem("accessToken"));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const idArr = selectedItems.map(ingredient => ingredient._id);
   if (bun) {
     idArr.push(bun._id);
@@ -51,8 +53,12 @@ const BurgerConstructor = () => {
   }, [selectedItems, bun])
 
   const handleOpenModal = () => {
-    setOpen(true);
-    dispatch(getOrder(idArr));
+    if (isUserAuth) {
+      setOpen(true);
+      dispatch(getOrder(idArr));
+    } else {
+      navigate('/login', {state: { from: { pathname: "/" } }});
+    }
   }
 
   const handleCloseModal = () => {
