@@ -5,16 +5,12 @@ import PropTypes from 'prop-types';
 import { useDrag } from "react-dnd";
 import { useLocation, Link } from 'react-router-dom';
 
-const BurgerIngredient = ({ ingredient, qty, openModal }) => {
+const BurgerIngredient = ({ ingredient, qty }) => {
   const { image, price, name, _id } = ingredient;
   const [, dragRef] = useDrag({
     type: 'ingredient',
     item: ingredient,
   })
-
-  const getID = () => {
-    openModal(_id)
-  }
 
   const location = useLocation();
   const ingredientId = _id;
@@ -28,7 +24,7 @@ const BurgerIngredient = ({ ingredient, qty, openModal }) => {
       state={{ background: location }}
       className={ingredientStyles.link}
     >
-      <div className={ingredientStyles.ingredient} onClick={getID} ref={dragRef}>
+      <div className={ingredientStyles.ingredient} ref={dragRef}>
         <img src={image} alt={name} className="ml-4 mr-4" />
         <div className={ingredientStyles.price}>
           <p className="text text_type_digits-default">{price}</p>
@@ -45,7 +41,6 @@ const BurgerIngredient = ({ ingredient, qty, openModal }) => {
 
 BurgerIngredient.propTypes = {
   ingredient: ingredientPropType.isRequired,
-  openModal: PropTypes.func.isRequired,
   qty: PropTypes.number
 };
 
