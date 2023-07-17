@@ -2,28 +2,19 @@ import React, { useEffect } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { resetPassword, createUser } from '../utils/BurgerApi';
+import { resetPassword } from '../utils/BurgerApi';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useForm } from '../hooks/useForm';
 
 export const ResetPasswordPage = () => {
-  const [passwordValue, setPasswordValue] = React.useState('')
-  const onChange = e => {
-    setPasswordValue(e.target.value)
-  }
-
-  const [tokenValue, setTokenValue] = React.useState('')
-  const inputRef = React.useRef(null)
-  const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
-  }
+  const {values, handleChange} = useForm({password: '', code: ''});
 
   const navigate = useNavigate();
   let state = useLocation();
 
   const createNewPassword = (e) => {
     e.preventDefault();
-    resetPassword(passwordValue, tokenValue)
+    resetPassword(values.password, values.code)
       .then((res) => {
         if (res && res.success) {
           navigate('/login')
@@ -47,27 +38,25 @@ export const ResetPasswordPage = () => {
   return (
     <div className={styles.main}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-      <form name="reset-password" className={styles.main}>
+      <form name="reset-password" className={styles.main} onSubmit={createNewPassword}>
         <PasswordInput
-          onChange={onChange}
-          value={passwordValue}
+          onChange={handleChange}
+          value={values.password}
           name={'password'}
           extraClass="mt-6"
         />
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={e => setTokenValue(e.target.value)}
-          value={tokenValue}
+          onChange={handleChange}
+          value={values.code}
           name={'code'}
           error={false}
-          ref={inputRef}
-          onIconClick={onIconClick}
           errorText={'Ошибка'}
           size={'default'}
           extraClass="mt-6"
         />
-        <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6" onClick={createNewPassword}>
+        <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6">
           Сохранить
         </Button>
       </form>

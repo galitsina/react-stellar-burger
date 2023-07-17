@@ -2,9 +2,10 @@ import IngredientDetailsStyles from './IngredientDetails.module.css';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {useMemo} from 'react';
+import { getAllIngredients } from '../../utils/Data';
 
 const IngredientDetails = () => {
-  const { items } = useSelector(state => state.allIngredients);
+  const { items } = useSelector(getAllIngredients);
   const { ingredientId } = useParams();
 
   const currentIngredient = useMemo(() => {

@@ -10,9 +10,21 @@ import { getItems } from '../../services/actions/allIngredients';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { Loader } from '../Loader/Loader';
 import {CLEAR_CURRENT_ITEM} from '../../services/actions/currentIngredient';
+import {
+  routeMain,
+  routeLogin,
+  routeRegister,
+  routeForgotPassword,
+  routeResetPassword,
+  routeIngredients,
+  routeIngredientId,
+  routeProfile,
+  route404,
+  getAllIngredients
+} from '../../utils/Data';
 
 const App = () => {
-  const { itemsRequest } = useSelector(state => state.allIngredients);
+  const { itemsRequest } = useSelector(getAllIngredients);
 
   const dispatch = useDispatch();
   useEffect(
@@ -39,14 +51,14 @@ const App = () => {
       {itemsRequest ? (<Loader />) :
         <>
           <Routes location={background || location}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
-            <Route path="/register" element={<OnlyUnAuth component={<RegistrationPage />} />} />
-            <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
-            <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPasswordPage />} />} />
-            <Route path="/ingredients/:ingredientId" element={<IngredientDetails />} />
-            <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path={routeMain} element={<HomePage />} />
+            <Route path={routeLogin} element={<OnlyUnAuth component={<LoginPage />} />} />
+            <Route path={routeRegister} element={<OnlyUnAuth component={<RegistrationPage />} />} />
+            <Route path={routeForgotPassword} element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
+            <Route path={routeResetPassword} element={<OnlyUnAuth component={<ResetPasswordPage />} />} />
+            <Route path={`${routeIngredients}${routeIngredientId}`} element={<IngredientDetails />} />
+            <Route path={routeProfile} element={<OnlyAuth component={<ProfilePage />} />} />
+            <Route path={route404} element={<NotFoundPage />} />
           </Routes>
 
           {background && (

@@ -6,6 +6,7 @@ import { createUser } from '../utils/BurgerApi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { GET_USER_SUCCESS } from '../services/actions/autorization';
+import { routeMain } from '../utils/Data';
 
 export const RegistrationPage = () => {
   const [nameValue, setNameValue] = React.useState('')
@@ -26,7 +27,6 @@ export const RegistrationPage = () => {
   }
 
   const navigate = useNavigate();
-  //const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -35,7 +35,7 @@ export const RegistrationPage = () => {
       .then(res => {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
-        navigate('/');
+        navigate(routeMain);
         dispatch({
           type: GET_USER_SUCCESS,
           user: res.user
@@ -49,7 +49,6 @@ export const RegistrationPage = () => {
 
 
   return (
-
     <div className={styles.main}>
       <h1 className="text text_type_main-medium">Регистрация</h1>
       <form name="registration" className={styles.main} onSubmit={handleSubmit}>

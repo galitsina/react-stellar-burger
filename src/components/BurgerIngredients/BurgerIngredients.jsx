@@ -3,14 +3,13 @@ import ingredientsStyles from './BurgerIngredients.module.css';
 import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { splitIngredients } from '../../utils/IngredientsUtils';
-import { ingredientPropType } from '../../utils/PropTypes';
-import PropTypes from 'prop-types';
 import IngredientGroup from '../IngredientGroup/IngredientGroup';
 import { useInView } from 'react-intersection-observer';
+import { getAllIngredients, getSelectedIngredients } from '../../utils/Data';
 
 const BurgerIngredients = (ref) => {
-  const { selectedItems, bun } = useSelector(state => state.selectedIngredients);
-  const { items, itemsRequest } = useSelector(state => state.allIngredients);
+  const { selectedItems, bun } = useSelector(getSelectedIngredients);
+  const { items, itemsRequest } = useSelector(getAllIngredients);
 
   const Tabs = useMemo(() => {
     return {

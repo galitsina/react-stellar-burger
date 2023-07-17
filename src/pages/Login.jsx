@@ -6,31 +6,29 @@ import { login } from '../utils/BurgerApi';
 import { GET_USER_SUCCESS } from '../services/actions/autorization';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
+import { routeMain } from '../utils/Data';
+import { useForm } from '../hooks/useForm';
 
 export const LoginPage = () => {
-  const [emailValue, setEmailValue] = React.useState('')
-  const onChangeEmail = e => {
-    setEmailValue(e.target.value)
-  }
-
-  const [passwordValue, setPasswordValue] = React.useState('')
-  const onChangePassword = e => {
-    setPasswordValue(e.target.value)
-  }
-
+  const {values, handleChange} = useForm({email: '', password: ''});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
 
-  console.log(location.state)
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email: emailValue, password: passwordValue })
+    login({ email: values.email, password: values.password })
       .then(res => {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
         //navigate( '/');
-        navigate(location.state.from.pathname || '/');
+        let pathroute;
+        if (location.state === null || location.state.from ===null ) {
+          pathroute = routeMain;
+        } else {
+          pathroute = location.state.from.pathname;
+        }
+        navigate(pathroute);
 
         dispatch({
           type: GET_USER_SUCCESS,
@@ -43,21 +41,20 @@ export const LoginPage = () => {
   }
 
   return (
-
     <div className={styles.main}>
       <h1 className="text text_type_main-medium">Вход</h1>
       <form name="login" className={styles.main} onSubmit={handleSubmit}>
         <EmailInput
-          onChange={onChangeEmail}
-          value={emailValue}
+          onChange={handleChange}
+          value={values.email}
           name={'email'}
           placeholder="E-mail"
           isIcon={false}
           extraClass="mt-6"
         />
         <PasswordInput
-          onChange={onChangePassword}
-          value={passwordValue}
+          onChange={handleChange}
+          value={values.password}
           name={'password'}
           extraClass="mt-6"
         />

@@ -6,26 +6,14 @@ import { logout, updateUser, getUser } from '../utils/BurgerApi';
 import { useSelector, useDispatch } from 'react-redux';
 import { CLEAR_USER } from '../services/actions/autorization';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from '../hooks/useForm';
 
 export const ProfilePage = () => {
+  const {values, handleChange, setValues} = useForm({name: '', email: '', password: ''});
   const [isLoginInputDisabled, setLoginInputDisabled] = React.useState(true);
   const [isChangeInput, setChangeInput] = React.useState(false);
-
-  const [nameValue, setNameValue] = React.useState('');
-  const onChangeName = e => {
-    setNameValue(e.target.value);
-    setChangeInput(true);
-  }
-
-  const [emailValue, setEmailValue] = React.useState('')
-  const onChangeEmail = e => {
-    setEmailValue(e.target.value);
-    setChangeInput(true);
-  }
-
-  const [passwordValue, setPasswordValue] = React.useState('******')
-  const onChangePassword = e => {
-    setPasswordValue(e.target.value);
+  const changeInput = (e) => {
+    handleChange(e);
     setChangeInput(true);
   }
 
@@ -58,8 +46,7 @@ export const ProfilePage = () => {
     getUser()
       .then((res) => {
         if (isMounted) {
-          setNameValue(res.user.name);
-          setEmailValue(res.user.email);
+          setValues({...values, name: res.user.name, email: res.user.email});
         }
       })
       .catch((err) => {
@@ -71,7 +58,7 @@ export const ProfilePage = () => {
 
   const saveUser = (e) => {
     e.preventDefault();
-    updateUser({ name: nameValue, email: emailValue, password: passwordValue })
+    updateUser({ name: values.name, email: values.email, password: values.password })
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
       })
@@ -81,8 +68,7 @@ export const ProfilePage = () => {
     e.preventDefault();
     getUser()
       .then((res) => {
-        setNameValue(res.user.name);
-        setEmailValue(res.user.email);
+        setValues({...values, name: res.user.name, email: res.user.email});
       })
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
@@ -102,13 +88,13 @@ export const ProfilePage = () => {
         <p className={`${profileStyles.parargraph} text text_type_main-default text_color_inactive mt-20`}>В этом разделе вы можете изменить свои персональные данные</p>
       </div>
       <div>
-        <form name="profile" >
+        <form name="profile" onSubmit={saveUser}>
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={onChangeName}
+            onChange={changeInput}
             icon={'EditIcon'}
-            value={nameValue}
+            value={values.name}
             name={'name'}
             disabled={isLoginInputDisabled}
             error={false}
@@ -118,24 +104,25 @@ export const ProfilePage = () => {
             extraClass="mb-6"
           />
           <EmailInput
-            onChange={onChangeEmail}
-            value={emailValue}
+            onChange={changeInput}
+            value={values.email}
             name={'email'}
             placeholder="Логин"
             isIcon={true}
             extraClass="mb-6"
           />
           <PasswordInput
-            onChange={onChangePassword}
-            value={passwordValue}
+            onChange={changeInput}
+            value={values.password}
             name={'password'}
             icon="EditIcon"
+            placeholder={'Пароль'}
           />
           {isChangeInput && <div className={profileStyles.buttons}>
             <Button htmlType="button" type="secondary" size="medium" onClick={cancelChanges}>
               Отмена
             </Button>
-            <Button htmlType="submit" type="primary" size="medium" onClick={saveUser}>
+            <Button htmlType="submit" type="primary" size="medium">
               Сохранить
             </Button>
           </div>}
