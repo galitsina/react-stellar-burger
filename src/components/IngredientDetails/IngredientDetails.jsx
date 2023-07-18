@@ -1,10 +1,25 @@
 import IngredientDetailsStyles from './IngredientDetails.module.css';
-import {ingredientPropType} from '../../utils/PropTypes';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import {useMemo} from 'react';
+import { getAllIngredients } from '../../utils/Data';
 
-const IngredientDetails = ({ingredient: {image_large, name, calories, proteins, fat, carbohydrates}}) => {
+const IngredientDetails = () => {
+  const { items } = useSelector(getAllIngredients);
+  const { ingredientId } = useParams();
+
+  const currentIngredient = useMemo(() => {
+   return items.find(({_id}) => _id === ingredientId);
+  }, [ingredientId, items]);
+
+  if (!currentIngredient) {
+    return null;
+  }
+  const { image_large, name, calories, proteins, fat, carbohydrates } = currentIngredient;
+
   return (
     <div className={`${IngredientDetailsStyles.container} mb-15`}>
-      <img src={image_large} alt={name}/>
+      <img src={image_large} alt={name} />
       <p className="text text_type_main-medium mt-4">{name}</p>
       <div className={`${IngredientDetailsStyles.calories__grid} mt-8`}>
         <p className="text text_type_main-default text_color_inactive">Калории,ккал</p>
@@ -19,7 +34,5 @@ const IngredientDetails = ({ingredient: {image_large, name, calories, proteins, 
     </div>
   )
 }
-
-IngredientDetails.propTypes = {ingredient: ingredientPropType};
 
 export default IngredientDetails;

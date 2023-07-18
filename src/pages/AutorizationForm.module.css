@@ -1,0 +1,19 @@
+.main {
+  margin: auto;
+  justify-content: center;
+  align-self: center;
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

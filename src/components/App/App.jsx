@@ -1,16 +1,31 @@
 import React, { useEffect } from 'react';
-import { Loader } from '../Loader/Loader';
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { HomePage, LoginPage, RegistrationPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, NotFoundPage } from '../../pages';
+import { OnlyAuth, OnlyUnAuth } from '../ProtectedRoute';
+import Modal from '../Modal/Modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { getItems } from '../../services/actions/allIngredients';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { Loader } from '../Loader/Loader';
+import {CLEAR_CURRENT_ITEM} from '../../services/actions/currentIngredient';
+import {
+  routeMain,
+  routeLogin,
+  routeRegister,
+  routeForgotPassword,
+  routeResetPassword,
+  routeIngredients,
+  routeIngredientId,
+  routeProfile,
+  route404,
+  getAllIngredients
+} from '../../utils/Data';
 
 const App = () => {
-  const { items, itemsRequest } = useSelector(state => state.allIngredients);
+  const { itemsRequest } = useSelector(getAllIngredients);
+
   const dispatch = useDispatch();
   useEffect(
     () => {
@@ -19,15 +34,46 @@ const App = () => {
     [dispatch]
   );
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const background = location.state && location.state.background;
+
+  const handleModalClose = () => {
+    navigate(-1);
+    dispatch({
+      type: CLEAR_CURRENT_ITEM,
+    })
+  };
+
   return (
     <div className={styles.app}>
       <AppHeader />
-      <DndProvider backend={HTML5Backend}>
-        <main className={styles.main}>
-          {itemsRequest ? (<Loader />) : (<BurgerIngredients data={items} />)}
-          <BurgerConstructor />
-        </main>
-      </DndProvider>
+      {itemsRequest ? (<Loader />) :
+        <>
+          <Routes location={background || location}>
+            <Route path={routeMain} element={<HomePage />} />
+            <Route path={routeLogin} element={<OnlyUnAuth component={<LoginPage />} />} />
+            <Route path={routeRegister} element={<OnlyUnAuth component={<RegistrationPage />} />} />
+            <Route path={routeForgotPassword} element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
+            <Route path={routeResetPassword} element={<OnlyUnAuth component={<ResetPasswordPage />} />} />
+            <Route path={`${routeIngredients}${routeIngredientId}`} element={<IngredientDetails />} />
+            <Route path={routeProfile} element={<OnlyAuth component={<ProfilePage />} />} />
+            <Route path={route404} element={<NotFoundPage />} />
+          </Routes>
+
+          {background && (
+            <Routes>
+              <Route
+                path='/ingredients/:ingredientId'
+                element={
+                  <Modal closeModal={handleModalClose} title='Детали ингредиента'>
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
+            </Routes>
+          )}
+        </>}
     </div>
   );
 }
