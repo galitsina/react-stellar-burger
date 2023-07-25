@@ -1,0 +1,38 @@
+.section {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  gap: 60px;
+}
+
+.status {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+}
+
+.column {
+  width: 280px;
+}
+
+.column_grid {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-height: 320px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(24px, 1fr));
+  grid-auto-flow: column;
+  row-gap: 8px;
+}
+
+.ready_color {
+  color: #00CCCC;
+}
+
+.digits_shadow {
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}

@@ -1,11 +1,12 @@
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeaderStyles from './AppHeader.module.css';
 import { Link, useLocation } from 'react-router-dom';
-import { routeMain, routeFeed, routeProfile } from '../../utils/Data';
+import { routeMain, routeFeed, routeProfile, routeOrdersHistory } from '../../utils/Data';
 
 const AppHeader = () => {
   const location = useLocation();
   const pathname = location.pathname;
+  const isPatnameProfile = /profile.*/.test(pathname);
 
   return (
     <header className={`${AppHeaderStyles.header} pb-4 pt-4`}>
@@ -23,8 +24,8 @@ const AppHeader = () => {
         <Logo />
       </div>
       <Link to='/profile' className={`${AppHeaderStyles.header__item} pb-4 pt-4 pl-5 pr-5`}>
-        <ProfileIcon type={pathname === routeProfile ? 'primary' : 'secondary'} />
-        <p className={`${pathname === routeProfile ? 'text_color_active' : 'text_color_inactive'} text text_type_main-default ml-2`}>Личный кабинет</p>
+        <ProfileIcon type={isPatnameProfile ? 'primary' : 'secondary'} />
+        <p className={`${isPatnameProfile ? 'text_color_active' : 'text_color_inactive'} text text_type_main-default ml-2`}>Личный кабинет</p>
       </Link>
     </header>
   );

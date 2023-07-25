@@ -1,0 +1,12 @@
+.section {
+  min-width: 600px;
+}
+
+.cards {
+  height: 756px;
+  overflow: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

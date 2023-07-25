@@ -1,0 +1,27 @@
+.main {
+  width: 320px;
+}
+
+.navigation {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+.link {
+  display: block;
+  text-decoration: none;
+  height: 64px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.active_link {
+  color: inherit;
+}
+
+.parargraph {
+  opacity: 0.4;
+}

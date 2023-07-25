@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
 import profileStyles from './Profile.module.css';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
-import { logout, updateUser, getUser } from '../utils/BurgerApi';
-import { useSelector, useDispatch } from 'react-redux';
-import { CLEAR_USER } from '../services/actions/autorization';
-import { useNavigate } from 'react-router-dom';
+import { updateUser, getUser } from '../utils/BurgerApi';
 import { useForm } from '../hooks/useForm';
+import Navigation from '../components/Navigation/Navigation';
 
 export const ProfilePage = () => {
   const {values, handleChange, setValues} = useForm({name: '', email: '', password: ''});
@@ -19,26 +16,6 @@ export const ProfilePage = () => {
 
   const onIconClick = () => {
     setLoginInputDisabled(false)
-  }
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const exit = (e) => {
-    e.preventDefault();
-    logout()
-      .then((res) => {
-        dispatch({
-          type: CLEAR_USER
-        });
-        //clear tokens
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        navigate('/login');
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      })
   }
 
   useEffect(() => {
@@ -77,16 +54,7 @@ export const ProfilePage = () => {
 
   return (
     <div className={profileStyles.main}>
-      <div className={profileStyles.left_column}>
-        <nav>
-          <ul className={profileStyles.navigation}>
-            <li><Link to="/profile" className={`${profileStyles.link} ${profileStyles.active_link} text text_type_main-medium`}>Профиль</Link></li>
-            <li><Link to="/profile/orders" className={`${profileStyles.link} text text_type_main-medium text_color_inactive`}>История заказов</Link></li>
-            <li><a className={`${profileStyles.link} text text_type_main-medium text_color_inactive`} onClick={exit}>Выход</a></li>
-          </ul>
-        </nav>
-        <p className={`${profileStyles.parargraph} text text_type_main-default text_color_inactive mt-20`}>В этом разделе вы можете изменить свои персональные данные</p>
-      </div>
+      <Navigation description='В этом разделе вы можете изменить свои персональные данные'/>
       <div>
         <form name="profile" onSubmit={saveUser}>
           <Input

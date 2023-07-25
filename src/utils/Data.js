@@ -8,6 +8,9 @@ export const routeIngredientId = "/:ingredientId";
 export const routeProfile = "/profile";
 export const route404 = "*";
 export const routeFeed = "/feed";
+export const routeFeedId = "/:feedId";
+export const routeOrdersHistory = "/orders";
+export const routeOrderId = "/:orderId";
 
 export const getAllIngredients = (state) => state.allIngredients;
 export const getAuthChecked = (state) => state.user.isAuthChecked;

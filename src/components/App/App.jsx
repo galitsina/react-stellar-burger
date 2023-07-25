@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { HomePage, LoginPage, RegistrationPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, NotFoundPage } from '../../pages';
+import { HomePage, LoginPage, RegistrationPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage, NotFoundPage, OrderListPage, OrderHistoryPage } from '../../pages';
 import { OnlyAuth, OnlyUnAuth } from '../ProtectedRoute';
 import Modal from '../Modal/Modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { getItems } from '../../services/actions/allIngredients';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import SingleOrder from '../SingleOrder/SingleOrder';
 import { Loader } from '../Loader/Loader';
 import {CLEAR_CURRENT_ITEM} from '../../services/actions/currentIngredient';
 import {
@@ -20,6 +21,10 @@ import {
   routeIngredientId,
   routeProfile,
   route404,
+  routeFeed,
+  routeFeedId,
+  routeOrdersHistory,
+  routeOrderId,
   getAllIngredients
 } from '../../utils/Data';
 
@@ -59,6 +64,10 @@ const App = () => {
             <Route path={`${routeIngredients}${routeIngredientId}`} element={<IngredientDetails />} />
             <Route path={routeProfile} element={<OnlyAuth component={<ProfilePage />} />} />
             <Route path={route404} element={<NotFoundPage />} />
+            <Route path={routeFeed} element={<OrderListPage />} />
+            <Route path={`${routeFeed}${routeFeedId}`} element={<SingleOrder />} />
+            <Route path={`${routeProfile}${routeOrdersHistory}`} element={<OnlyAuth component={<OrderHistoryPage />} />} />
+            <Route path={`${routeProfile}${routeOrdersHistory}${routeOrderId}`} element={<OnlyAuth component={<SingleOrder />} />} />
           </Routes>
 
           {background && (
