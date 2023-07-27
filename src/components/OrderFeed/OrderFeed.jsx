@@ -1,11 +1,18 @@
 import orderFeedStyles from './OrderFeed.module.css';
 import OrderCard from '../OrderCard/OrderCard';
+import { useSelector } from 'react-redux';
+import { getWsOrders } from '../../utils/Data';
+import { v4 as uuidv4 } from 'uuid';
 
 const OrderFeed = () => {
+  const { orders } = useSelector(getWsOrders);
+
   return (
     <section className={orderFeedStyles.section}>
       <div className={`${orderFeedStyles.cards} custom-scroll`}>
-        <OrderCard status=''/>
+        {orders.map(item => (
+          <OrderCard currentStatus='' currenOrder={item} key={uuidv4()}/>
+        ))}
       </div>
     </section>
   )

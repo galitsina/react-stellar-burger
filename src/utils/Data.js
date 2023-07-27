@@ -16,3 +16,4 @@ export const getAllIngredients = (state) => state.allIngredients;
 export const getAuthChecked = (state) => state.user.isAuthChecked;
 export const getOrderState = (state) => state.order;
 export const getSelectedIngredients = (state) => state.selectedIngredients;
+export const getWsOrders = (state) => state.wsOrders;

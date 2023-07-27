@@ -7,7 +7,7 @@ export const OrderHistoryPage = () => {
     <div className={`${orderHistoryStyles.main} mt-10`}>
       <div className="mt-20"><Navigation description='В этом разделе вы можете просмотреть свою историю заказов'/></div>
       <div className={`${orderHistoryStyles.list} custom-scroll`}>
-        <OrderCard status='current-status'/>
+        <OrderCard currentStatus='current-status'/>
       </div>
     </div>
   )

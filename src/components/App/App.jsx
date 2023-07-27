@@ -11,6 +11,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import SingleOrder from '../SingleOrder/SingleOrder';
 import { Loader } from '../Loader/Loader';
 import {CLEAR_CURRENT_ITEM} from '../../services/actions/currentIngredient';
+import {LIVE_ORDER_WS_OPEN} from '../../services/actions/wsOrders';
 import {
   routeMain,
   routeLogin,
@@ -34,6 +35,8 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(
     () => {
+      //TODO: delete it afret WS integration
+    dispatch({type: LIVE_ORDER_WS_OPEN})
       dispatch(getItems());
     },
     [dispatch]
@@ -77,6 +80,15 @@ const App = () => {
                 element={
                   <Modal closeModal={handleModalClose} title='Детали ингредиента'>
                     <IngredientDetails />
+                  </Modal>
+                }
+              />
+              {/* TODO: wrap up SingleOrder in the OrderHistoryPage in OnlyAuth! */}
+              <Route
+                path={`${routeFeed}${routeFeedId}`}
+                element={
+                  <Modal closeModal={handleModalClose} title=''>
+                    <SingleOrder />
                   </Modal>
                 }
               />

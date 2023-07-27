@@ -5,6 +5,7 @@
   border-radius: 40px;
   background-color: #1C1C21;
   box-shadow: px 0px 1px 0px rgba(0, 0, 0, 0.04), 0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
 }
 
 .details {
@@ -90,4 +91,9 @@
 position: absolute;
 top: 20px;
 left: 20px;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
 }
