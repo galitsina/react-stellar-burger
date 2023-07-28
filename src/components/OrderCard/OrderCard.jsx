@@ -23,7 +23,7 @@ const OrderCard = ({ currentStatus, currentOrder }) => {
     items.length &&
     <Link
       key={number}
-      to={`/feed/${number}`}
+      to={`${location.pathname}/${number}`}
       state={{ background: location }}
       className={orderCardStyles.link}
     >

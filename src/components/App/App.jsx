@@ -10,8 +10,8 @@ import { getItems } from '../../services/actions/allIngredients';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import SingleOrder from '../SingleOrder/SingleOrder';
 import { Loader } from '../Loader/Loader';
-import {CLEAR_CURRENT_ITEM} from '../../services/actions/currentIngredient';
-import {LIVE_ORDER_WS_OPEN} from '../../services/actions/wsOrders';
+import { CLEAR_CURRENT_ITEM } from '../../services/actions/currentIngredient';
+import { LIVE_ORDER_WS_OPEN } from '../../services/actions/wsOrders';
 import {
   routeMain,
   routeLogin,
@@ -36,7 +36,7 @@ const App = () => {
   useEffect(
     () => {
       //TODO: delete it afret WS integration
-    dispatch({type: LIVE_ORDER_WS_OPEN})
+      dispatch({ type: LIVE_ORDER_WS_OPEN })
       dispatch(getItems());
     },
     [dispatch]
@@ -76,7 +76,7 @@ const App = () => {
           {background && (
             <Routes>
               <Route
-                path='/ingredients/:ingredientId'
+                path={`${routeIngredients}${routeIngredientId}`}
                 element={
                   <Modal closeModal={handleModalClose} title='Детали ингредиента'>
                     <IngredientDetails />
@@ -90,6 +90,15 @@ const App = () => {
                   <Modal closeModal={handleModalClose} title=''>
                     <SingleOrder />
                   </Modal>
+                }
+              />
+              <Route
+                path={`${routeProfile}${routeOrdersHistory}${routeOrderId}`}
+                element={
+                  <OnlyAuth component={
+                    <Modal closeModal={handleModalClose} title=''>
+                      <SingleOrder />
+                    </Modal>} />
                 }
               />
             </Routes>

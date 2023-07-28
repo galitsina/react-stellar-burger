@@ -1,4 +1,3 @@
-import {GET_ORDERS_SUCCESS} from '../actions/wsOrders';
 import { webSocketStatus } from '../../utils/WebSocketUtils';
 import {LIVE_ORDER_WS_CONNECTING, LIVE_ORDER_WS_OPEN, LIVE_ORDER_WS_CLOSE, LIVE_ORDER_WS_MESSAGE, LIVE_ORDER_WS_ERROR } from '../actions/wsOrders';
 
@@ -28,7 +27,7 @@ const initialState = {
     ],
     _id: "2",
     status: "done",
-    number: 421,
+    number: 481,
     createdAt: "2021-06-23T14:43:22.587Z",
     updatedAt: "2021-06-23T14:43:22.603Z"
   },
