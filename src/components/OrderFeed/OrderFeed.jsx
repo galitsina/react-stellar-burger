@@ -11,7 +11,7 @@ const OrderFeed = () => {
     <section className={orderFeedStyles.section}>
       <div className={`${orderFeedStyles.cards} custom-scroll`}>
         {orders.map(item => (
-          <OrderCard currentStatus='' currenOrder={item} key={uuidv4()}/>
+          <OrderCard currentStatus='' currentOrder={item} key={uuidv4()}/>
         ))}
       </div>
     </section>

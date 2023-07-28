@@ -20,3 +20,13 @@ export const splitIngredients = (data) => {
   }
   return ingredients;
 }
+
+export const findItemsInOrder = (ingredientsInOrder, allIngredients) => {
+  return ingredientsInOrder.map(ingredientInOrder => {
+    const arr = allIngredients.find(ingredientInAll => {
+      return ingredientInAll._id === ingredientInOrder;
+    })
+    return arr;
+  })
+}
+

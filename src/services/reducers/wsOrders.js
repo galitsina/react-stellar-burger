@@ -47,7 +47,7 @@ const initialState = {
     ],
     _id: "2",
     status: "done",
-    number: 421,
+    number: 422,
     createdAt: "2021-06-23T14:43:22.587Z",
     updatedAt: "2021-06-23T14:43:22.603Z"
   },
@@ -57,7 +57,7 @@ const initialState = {
     ],
     _id: "2",
     status: "done",
-    number: 421,
+    number: 540,
     createdAt: "2021-06-23T14:43:22.587Z",
     updatedAt: "2021-06-23T14:43:22.603Z"
   }

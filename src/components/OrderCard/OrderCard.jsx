@@ -5,34 +5,25 @@ import { getAllIngredients } from '../../utils/Data';
 import PropTypes from 'prop-types';
 import { useLocation, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { findItemsInOrder } from '../../utils/IngredientsUtils';
 
-const OrderCard = ({ currentStatus, currenOrder }) => {
+const OrderCard = ({ currentStatus, currentOrder }) => {
+  const location = useLocation();
   const maxImagesAmount = 5;
   const today = new Date();
   const { items } = useSelector(getAllIngredients);
-  console.log(items);
-  const { ingredients, status, orderNumber } = currenOrder;
-  console.log(ingredients);
 
-  const necessaryIngredients = ingredients.map(orderId => {
-    const arr = items.find(ingredient => {
-      return ingredient._id === orderId;
-    });
-    return arr;
-  })
-  console.log('necessaryIngredients');
-  console.log(necessaryIngredients);
+  const { ingredients, status, number } = currentOrder;
+
+  const necessaryIngredients = findItemsInOrder(ingredients, items)
   const iconList = necessaryIngredients.slice(0, maxImagesAmount);
-  console.log('iconList');
-  console.log(iconList);
   const leftIngredientsAmount = necessaryIngredients.length - maxImagesAmount;
-  const location = useLocation();
 
   return (
     items.length &&
     <Link
-      key={orderNumber}
-      to={`/feed/${orderNumber}`}
+      key={number}
+      to={`/feed/${number}`}
       state={{ background: location }}
       className={orderCardStyles.link}
     >
