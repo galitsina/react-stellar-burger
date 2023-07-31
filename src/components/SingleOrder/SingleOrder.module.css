@@ -10,10 +10,6 @@
   align-self: center;
 }
 
-.ready_color {
-  color: #00CCCC;
-}
-
 .order_list {
   height: 266px;
   overflow: scroll;

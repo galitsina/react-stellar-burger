@@ -10,8 +10,6 @@ import { getItems } from '../../services/actions/allIngredients';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import SingleOrder from '../SingleOrder/SingleOrder';
 import { Loader } from '../Loader/Loader';
-import { CLEAR_CURRENT_ITEM } from '../../services/actions/currentIngredient';
-import { LIVE_ORDER_WS_OPEN } from '../../services/actions/wsOrders';
 import {
   routeMain,
   routeLogin,
@@ -25,8 +23,7 @@ import {
   routeFeed,
   routeFeedId,
   routeOrdersHistory,
-  routeOrderId,
-  getAllIngredients
+  getAllIngredients,
 } from '../../utils/Data';
 
 const App = () => {
@@ -35,8 +32,6 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(
     () => {
-      //TODO: delete it afret WS integration
-      dispatch({ type: LIVE_ORDER_WS_OPEN })
       dispatch(getItems());
     },
     [dispatch]
@@ -48,9 +43,6 @@ const App = () => {
 
   const handleModalClose = () => {
     navigate(-1);
-    dispatch({
-      type: CLEAR_CURRENT_ITEM,
-    })
   };
 
   return (
@@ -70,7 +62,7 @@ const App = () => {
             <Route path={routeFeed} element={<OrderListPage />} />
             <Route path={`${routeFeed}${routeFeedId}`} element={<SingleOrder />} />
             <Route path={`${routeProfile}${routeOrdersHistory}`} element={<OnlyAuth component={<OrderHistoryPage />} />} />
-            <Route path={`${routeProfile}${routeOrdersHistory}${routeOrderId}`} element={<OnlyAuth component={<SingleOrder />} />} />
+            <Route path={`${routeProfile}${routeOrdersHistory}${routeFeedId}`} element={<OnlyAuth component={<SingleOrder />} />} />
           </Routes>
 
           {background && (
@@ -83,7 +75,6 @@ const App = () => {
                   </Modal>
                 }
               />
-              {/* TODO: wrap up SingleOrder in the OrderHistoryPage in OnlyAuth! */}
               <Route
                 path={`${routeFeed}${routeFeedId}`}
                 element={
@@ -93,7 +84,7 @@ const App = () => {
                 }
               />
               <Route
-                path={`${routeProfile}${routeOrdersHistory}${routeOrderId}`}
+                path={`${routeProfile}${routeOrdersHistory}${routeFeedId}`}
                 element={
                   <OnlyAuth component={
                     <Modal closeModal={handleModalClose} title=''>

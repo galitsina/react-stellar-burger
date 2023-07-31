@@ -14,7 +14,3 @@ export const connect = (url) => ({
 export const disconnect = () => ({
   type: LIVE_ORDER_DISCONNECT
 });
-
-
-
-

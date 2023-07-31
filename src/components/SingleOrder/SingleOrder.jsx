@@ -1,18 +1,19 @@
 import singleOrderStyles from './SingleOrder.module.css';
 import { FormattedDate, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
-import { getAllIngredients } from '../../utils/Data';
+import { getAllIngredients, getWsOrders, statusName, colorStatus } from '../../utils/Data';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { getOrderDetails } from '../../utils/BurgerApi';
 import { v4 as uuidv4 } from 'uuid';
 
 const SingleOrder = () => {
   const [ingredientsInOrder, setIngredientsInOrder] = useState([]);
-  const today = new Date();
   const { items } = useSelector(getAllIngredients);
   const { feedId } = useParams();
 
+  const { wsOrders } = useSelector(getWsOrders);
+  const { orders } = wsOrders;
   useEffect(() => {
     // note mutable flag
     let isMounted = true;
@@ -27,6 +28,16 @@ const SingleOrder = () => {
     //clean up
     return () => { isMounted = false };
   }, [])
+
+  const currentOrder = useMemo(() => {
+    if(Boolean(orders)) {
+      return orders.find(({number}) => number == feedId);
+    }
+  }, [feedId, orders]);
+  if (!currentOrder) {
+    return null;
+  }
+  const { number, createdAt, status, name } = currentOrder;
 
   const uniqIngredientObj = ingredientsInOrder.reduce((acc, item) => {
     if (!acc[item]) {
@@ -58,20 +69,19 @@ const SingleOrder = () => {
       </div>
     )
   })
-
   return (
     items.length &&
     <div className={`${singleOrderStyles.container} mb-15`}>
-      <p className={`${singleOrderStyles.order_number} text text_type_digits-default mb-10`}>#88768</p>
-      <p className="text text_type_main-medium mb-3">Black Hole Singularity острый бургер</p>
-      <p className={`${singleOrderStyles.ready_color} text text_type_main-default mb-15`}>Выполнен</p>
+      <p className={`${singleOrderStyles.order_number} text text_type_digits-default mb-10`}>#{number}</p>
+      <p className="text text_type_main-medium mb-3">{name}</p>
+      <p className='text text_type_main-default mb-15' style={{color: colorStatus(status)}}>{statusName(status)}</p>
       <p className="text text_type_main-medium mb-6">Состав:</p>
       <div className={`${singleOrderStyles.order_list} custom-scroll mb-10 pr-8`}>
         { ingredientList }
       </div>
       <div className={singleOrderStyles.time_price}>
         <span className="text text_type_main-default text_color_inactive">
-          <FormattedDate date={new Date(today.getDate())} />
+          <FormattedDate date={new Date(createdAt)} />
         </span>
         <div className={singleOrderStyles.price}>
           <p className="text text_type_digits-default">{totalPrice}</p>

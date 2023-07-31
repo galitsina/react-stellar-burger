@@ -5,9 +5,11 @@ import { getWsOrders } from '../../utils/Data';
 import { v4 as uuidv4 } from 'uuid';
 
 const OrderFeed = () => {
-  const { orders } = useSelector(getWsOrders);
+  const { wsOrders } = useSelector(getWsOrders);
+  const { orders } = wsOrders;
 
   return (
+    Boolean(orders) &&
     <section className={orderFeedStyles.section}>
       <div className={`${orderFeedStyles.cards} custom-scroll`}>
         {orders.map(item => (
