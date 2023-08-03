@@ -4,18 +4,10 @@ import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import ModalStyles from './Modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
-import { useDispatch} from 'react-redux';
-import { CLEAR_CURRENT_ITEM } from '../../services/actions/currentIngredient';
+
 const modalRoot = document.getElementById('react-modals');
 
 const Modal = ({ closeModal, title, children }) => {
-  const location = useLocation();
-  const pathname = location.pathname;
-  const isPatnameIngredients = /ingredients.*/.test(pathname);
-
-  const dispatch = useDispatch();
-
   React.useEffect(() => {
     document.addEventListener('keydown', handleClose);
     return () => {
@@ -31,11 +23,6 @@ const Modal = ({ closeModal, title, children }) => {
     if ((e.key === 'Escape')) {
       closeModal();
     }
-    // if (location.pathname === isPatnameIngredients) {
-    //   dispatch({
-    //     type: CLEAR_CURRENT_ITEM,
-    //   })
-    // }
   }
 
   return ReactDOM.createPortal(

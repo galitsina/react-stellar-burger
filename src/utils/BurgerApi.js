@@ -76,7 +76,7 @@ export const resetPassword = (password, token) => {
   })
 }
 
-export const createUser = ({email, password, username}) => {
+export const createUserRequest = ({email, password, username}) => {
   return request('auth/register', {
     method: 'POST',
     body: JSON.stringify({
@@ -128,7 +128,7 @@ export const refreshToken = () => {
   })
 }
 
-export const getUser = () => {
+export const getUserRequest = () => {
   return fetchWithRefresh('auth/user', {
     method: 'GET',
     headers: {

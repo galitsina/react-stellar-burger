@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import profileStyles from './Profile.module.css';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { updateUser, getUser } from '../utils/BurgerApi';
+import { updateUser, getUserRequest } from '../utils/BurgerApi';
 import { useForm } from '../hooks/useForm';
 import Navigation from '../components/Navigation/Navigation';
 
@@ -20,7 +20,7 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     let isMounted = true;
-    getUser()
+    getUserRequest()
       .then((res) => {
         if (isMounted) {
           setValues({...values, name: res.user.name, email: res.user.email});
@@ -43,7 +43,7 @@ export const ProfilePage = () => {
 
   const cancelChanges = (e) => {
     e.preventDefault();
-    getUser()
+    getUserRequest()
       .then((res) => {
         setValues({...values, name: res.user.name, email: res.user.email});
       })

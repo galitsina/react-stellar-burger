@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { createUser } from '../utils/BurgerApi';
+import { createUserRequest } from '../utils/BurgerApi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { GET_USER_SUCCESS } from '../services/actions/autorization';
@@ -31,7 +31,7 @@ export const RegistrationPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUser({ email: emailValue, password: passwordValue, username: nameValue })
+    createUserRequest({ email: emailValue, password: passwordValue, username: nameValue })
       .then(res => {
         localStorage.setItem("refreshToken", res.refreshToken);
         localStorage.setItem("accessToken", res.accessToken);

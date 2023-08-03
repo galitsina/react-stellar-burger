@@ -5,26 +5,39 @@ import { Link } from 'react-router-dom';
 import { resetPassword } from '../utils/BurgerApi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from '../hooks/useForm';
+import { resetUserPassword } from '../services/actions/autorization';
+import { getUserState } from '../utils/Data';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const ResetPasswordPage = () => {
   const {values, handleChange} = useForm({password: '', code: ''});
-
+  const { resetPassword, resetPasswordFailed } = useSelector(getUserState);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   let state = useLocation();
 
   const createNewPassword = (e) => {
     e.preventDefault();
-    resetPassword(values.password, values.code)
-      .then((res) => {
-        if (res && res.success) {
-          navigate('/login')
-        } else {
-          alert('Произошла ошибка при восстановлении пароля');
-        }
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      })
+    if (!resetPassword && !resetPasswordFailed) {
+      dispatch(resetUserPassword(values.password, values.code));
+    }
+    if (resetPassword && !resetPasswordFailed) {
+      navigate('/login');
+    } else if (resetPasswordFailed) {
+      alert('Произошла ошибка при восстановлении пароля');
+    }
+
+    // resetPassword(values.password, values.code)
+    //   .then((res) => {
+    //     if (res && res.success) {
+    //       navigate('/login')
+    //     } else {
+    //       alert('Произошла ошибка при восстановлении пароля');
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(`Произошла ошибка: ${err}`);
+    //   })
   }
 
   //неавторизованный пользователь не может напрямую попасть на маршрут /reset-password

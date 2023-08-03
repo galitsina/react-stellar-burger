@@ -8,36 +8,56 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
 import { routeMain } from '../utils/Data';
 import { useForm } from '../hooks/useForm';
+import { getUserState } from '../utils/Data';
+import { loginUser } from '../services/actions/autorization';
 
 export const LoginPage = () => {
-  const {values, handleChange} = useForm({email: '', password: ''});
+  const { values, handleChange } = useForm({ email: '', password: '' });
+  const { user, userFailed, accessToken, refreshToken } = useSelector(getUserState);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email: values.email, password: values.password })
-      .then(res => {
-        localStorage.setItem("refreshToken", res.refreshToken);
-        localStorage.setItem("accessToken", res.accessToken);
-        //navigate( '/');
-        let pathroute;
-        if (location.state === null || location.state.from ===null ) {
-          pathroute = routeMain;
-        } else {
-          pathroute = location.state.from.pathname;
-        }
-        navigate(pathroute);
+    if(!user && !userFailed) {
+      dispatch(loginUser({ email: values.email, password: values.password }))
+    }
+    if (user && !userFailed) {
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("accessToken", accessToken);
+      let pathroute;
+      if (location.state === null || location.state.from === null) {
+        pathroute = routeMain;
+      } else {
+        pathroute = location.state.from.pathname;
+      }
+      navigate(pathroute);
+    } else {
+      alert('Возникла ошибка при попытке входа')
+    }
 
-        dispatch({
-          type: GET_USER_SUCCESS,
-          user: res.user
-        })
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      })
+    // login({ email: values.email, password: values.password })
+    //   .then(res => {
+    //     localStorage.setItem("refreshToken", res.refreshToken);
+    //     localStorage.setItem("accessToken", res.accessToken);
+    //     let pathroute;
+    //     if (location.state === null || location.state.from === null) {
+    //       pathroute = routeMain;
+    //     } else {
+    //       pathroute = location.state.from.pathname;
+    //     }
+    //     navigate(pathroute);
+
+    //     dispatch({
+    //       type: GET_USER_SUCCESS,
+    //       user: res.user
+    //     })
+    //   })
+    //   .catch((err) => {
+    //     console.log(`Произошла ошибка: ${err}`);
+    //   })
   }
 
   return (

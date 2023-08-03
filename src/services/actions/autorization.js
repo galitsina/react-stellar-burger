@@ -1,17 +1,26 @@
-import { createUser } from '../../utils/BurgerApi';
+import { createUserRequest, forgotPassword, resetPassword, login, getUserRequest, updateUser } from '../../utils/BurgerApi';
 
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
+export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAILED = 'GET_USER_FAILED';
+export const AUTH_REQUEST_FAILED = 'AUTH_REQUEST_FAILED';
 export const CLEAR_USER = 'CLEAR_USER';
 
+export const POST_FORGOT_PASSWORD_SUCCESS = 'POST_FORGOT_PASSWORD_SUCCESS';
+export const POST_FORGOT_PASSWORD_FAILED = 'POST_FORGOT_PASSWORD_FAILED';
 
-export function getUser({email, password, username}) {
+export const POST_RESET_PASSWORD_SUCCESS = 'POST_RESET_PASSWORD_SUCCESS';
+export const POST_RESET_PASSWORD_FAILED = 'POST_RESET_PASSWORD_FAILED';
+
+export const POST_LOGIN_USER_SUCCESS = 'POST_LOGIN_USER_SUCCESS';
+export const POST_LOGIN_USER_FAILED = 'POST_LOGIN_USER_FAILED';
+
+
+export function createUser({ email, password, username }) {
   return function (dispatch) {
     dispatch({
-      type: GET_USER_REQUEST
+      type: AUTH_REQUEST
     });
-    createUser({email, password, username})
+    createUserRequest({ email, password, username })
       .then((res) => {
         if (res && res.success) {
           dispatch({
@@ -20,15 +29,126 @@ export function getUser({email, password, username}) {
           });
         } else {
           dispatch({
-            type: GET_USER_FAILED
+            type: AUTH_REQUEST_FAILED
           });
         }
       })
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
         dispatch({
-          type: GET_USER_FAILED
+          type: AUTH_REQUEST_FAILED
         })
+      })
+  }
+}
+
+export function forgotUserPassword(emailValue) {
+  return function (dispatch) {
+    forgotPassword(emailValue)
+      .then((res) => {
+        if (res && res.success) {
+          dispatch({
+            type: POST_FORGOT_PASSWORD_SUCCESS,
+          });
+        } else {
+          dispatch({
+            type: POST_FORGOT_PASSWORD_FAILED
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+        dispatch({
+          type: POST_FORGOT_PASSWORD_FAILED
+        })
+      })
+  }
+}
+
+export function resetUserPassword(passwordValue, codeValue) {
+  return function (dispatch) {
+    resetPassword(passwordValue, codeValue)
+      .then((res) => {
+        if (res && res.success) {
+          dispatch({
+            type: POST_RESET_PASSWORD_SUCCESS,
+          });
+        } else {
+          dispatch({
+            type: POST_RESET_PASSWORD_FAILED
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+        dispatch({
+          type: POST_RESET_PASSWORD_FAILED
+        })
+      })
+  }
+}
+
+export function loginUser({ email, password }) {
+  return function (dispatch) {
+    dispatch({
+      type: AUTH_REQUEST
+    });
+    login({ email, password })
+      .then((res) => {
+        if (res && res.success) {
+          dispatch({
+            type: GET_USER_SUCCESS,
+            user: res.user,
+            refreshToken: res.refreshToken,
+            accessToken: res.accessToken
+          });
+        } else {
+          dispatch({
+            type: AUTH_REQUEST_FAILED
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+        dispatch({
+          type: AUTH_REQUEST_FAILED
+        })
+      })
+  }
+}
+
+export function getUserData() {
+  return function (dispatch) {
+    dispatch({
+      type: AUTH_REQUEST
+    });
+    getUserRequest()
+      .then((res) => {
+        if (res && res.success) {
+          dispatch({
+            type: GET_USER_SUCCESS,
+            user: res.user
+          });
+        } else {
+          dispatch({
+            type: AUTH_REQUEST_FAILED
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
+        dispatch({
+          type: AUTH_REQUEST_FAILED
+        })
+      })
+  }
+}
+
+export function patchUserData({ name, email, password }) {
+  return function (dispatch) {
+    updateUser({ name, email, password })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
       })
   }
 }

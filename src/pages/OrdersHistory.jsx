@@ -4,7 +4,6 @@ import Navigation from '../components/Navigation/Navigation';
 import OrderCard from '../components/OrderCard/OrderCard';
 import { useSelector, useDispatch } from 'react-redux';
 import { getWsOrders } from '../utils/Data';
-import { v4 as uuidv4 } from 'uuid';
 import { privateOrdersUrl, WebsocketStatus, statusName} from '../utils/Data';
 import {connect, disconnect} from '../services/actions/wsOrders';
 import { Loader } from '../components/Loader/Loader';
@@ -33,7 +32,7 @@ export const OrderHistoryPage = () => {
       <div className="mt-20"><Navigation description='В этом разделе вы можете просмотреть свою историю заказов' /></div>
       <div className={`${orderHistoryStyles.list} custom-scroll`}>
         {orders.map(item => (
-          <OrderCard currentStatus={statusName(item.status)} currentOrder={item} key={uuidv4()}/>
+          <OrderCard currentStatus={statusName(item.status)} currentOrder={item} key={item._id}/>
         ))}
       </div>
     </div>

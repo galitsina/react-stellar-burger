@@ -20,9 +20,11 @@ const AppHeader = () => {
           <p className={`${pathname === routeFeed ? 'text_color_active' : 'text_color_inactive'} text text_type_main-default ml-2`}>Лента заказов</p>
         </Link>
       </nav>
-      <div className={AppHeaderStyles.header__logo}>
-        <Logo />
-      </div>
+      <Link to={routeMain}>
+        <div className={AppHeaderStyles.header__logo}>
+          <Logo />
+        </div>
+      </Link>
       <Link to='/profile' className={`${AppHeaderStyles.header__item} pb-4 pt-4 pl-5 pr-5`}>
         <ProfileIcon type={isPatnameProfile ? 'primary' : 'secondary'} />
         <p className={`${isPatnameProfile ? 'text_color_active' : 'text_color_inactive'} text text_type_main-default ml-2`}>Личный кабинет</p>

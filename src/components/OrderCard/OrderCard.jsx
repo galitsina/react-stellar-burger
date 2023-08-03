@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { getAllIngredients, colorStatus } from '../../utils/Data';
 import PropTypes from 'prop-types';
 import { useLocation, Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import { findItemsInOrder } from '../../utils/IngredientsUtils';
 
 const OrderCard = ({ currentStatus, currentOrder }) => {
@@ -39,8 +38,8 @@ const OrderCard = ({ currentStatus, currentOrder }) => {
         </div>
         <div className={orderCardStyles.details}>
           <div className={orderCardStyles.ingredients}>
-            {iconList.map(item => (
-              <div className={orderCardStyles.image_border} key={uuidv4()}>
+            {iconList.map((item, i) => (
+              <div className={orderCardStyles.image_border} key={i}>
                 <img className={orderCardStyles.image_icon} src={item.image} alt={item.name} />
               </div>
             ))
@@ -63,7 +62,7 @@ const OrderCard = ({ currentStatus, currentOrder }) => {
 }
 
 OrderCard.propTypes = {
-  status: PropTypes.string,
+  currentStatus: PropTypes.string,
   currenOrder: PropTypes.object
 };
 
