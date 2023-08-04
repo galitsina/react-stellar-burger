@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';

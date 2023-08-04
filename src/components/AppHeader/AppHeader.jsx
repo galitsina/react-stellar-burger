@@ -1,7 +1,7 @@
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeaderStyles from './AppHeader.module.css';
 import { Link, useLocation } from 'react-router-dom';
-import { routeMain, routeFeed, routeProfile, routeOrdersHistory } from '../../utils/Data';
+import { routeMain, routeFeed } from '../../utils/Data';
 
 const AppHeader = () => {
   const location = useLocation();

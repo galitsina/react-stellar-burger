@@ -7,7 +7,7 @@ import {
   POST_FORGOT_PASSWORD_FAILED,
   POST_RESET_PASSWORD_SUCCESS,
   POST_RESET_PASSWORD_FAILED,
-
+  RESET
 } from '../actions/autorization';
 
 const initialUserState = {
@@ -19,7 +19,8 @@ const initialUserState = {
   resetPassword: false,
   resetPasswordFailed: false,
   refreshToken: null,
-  accessToken: null
+  accessToken: null,
+  wasLoggedOut: false
 }
 
 export const userReducer = (state = initialUserState, action) => {
@@ -52,7 +53,10 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         user: null,
         userFailed: false,
-        isAuthChecked: true
+        isAuthChecked: true,
+        refreshToken: null,
+        accessToken: null,
+        wasLoggedOut: true
       }
     }
     case POST_FORGOT_PASSWORD_SUCCESS: {
@@ -81,6 +85,11 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         resetPassword: false,
         resetPasswordFailed: true
+      }
+    }
+    case RESET: {
+      return {
+        ...initialUserState
       }
     }
 

@@ -1,9 +1,8 @@
-import React from 'react';
+import { useEffect } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../utils/BurgerApi';
-import { GET_USER_SUCCESS } from '../services/actions/autorization';
+import { RESET } from '../services/actions/autorization';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
 import { routeMain } from '../utils/Data';
@@ -13,17 +12,13 @@ import { loginUser } from '../services/actions/autorization';
 
 export const LoginPage = () => {
   const { values, handleChange } = useForm({ email: '', password: '' });
-  const { user, userFailed, accessToken, refreshToken } = useSelector(getUserState);
+  const { user, userFailed, accessToken, refreshToken, isAuthChecked } = useSelector(getUserState);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if(!user && !userFailed) {
-      dispatch(loginUser({ email: values.email, password: values.password }))
-    }
+  useEffect(() => {
     if (user && !userFailed) {
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("accessToken", accessToken);
@@ -34,30 +29,17 @@ export const LoginPage = () => {
         pathroute = location.state.from.pathname;
       }
       navigate(pathroute);
-    } else {
+    } else if (userFailed) {
       alert('Возникла ошибка при попытке входа')
+      dispatch({ type: RESET })
     }
+  }, [user, userFailed])
 
-    // login({ email: values.email, password: values.password })
-    //   .then(res => {
-    //     localStorage.setItem("refreshToken", res.refreshToken);
-    //     localStorage.setItem("accessToken", res.accessToken);
-    //     let pathroute;
-    //     if (location.state === null || location.state.from === null) {
-    //       pathroute = routeMain;
-    //     } else {
-    //       pathroute = location.state.from.pathname;
-    //     }
-    //     navigate(pathroute);
-
-    //     dispatch({
-    //       type: GET_USER_SUCCESS,
-    //       user: res.user
-    //     })
-    //   })
-    //   .catch((err) => {
-    //     console.log(`Произошла ошибка: ${err}`);
-    //   })
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!user && isAuthChecked) {
+      dispatch(loginUser({ email: values.email, password: values.password }))
+    }
   }
 
   return (

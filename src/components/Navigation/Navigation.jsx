@@ -1,33 +1,32 @@
 import navigationStyles from './Navigation.module.css';
 import { Link } from 'react-router-dom';
-import { logout } from '../../utils/BurgerApi';
-import { useDispatch } from 'react-redux';
-import { CLEAR_USER } from '../../services/actions/autorization';
+import { useDispatch, useSelector } from 'react-redux';
+import { RESET, logoutUser } from '../../services/actions/autorization';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { routeOrdersHistory, routeProfile } from '../../utils/Data';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { getUserState } from '../../utils/Data';
 
 export const Navigation = ({description}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
+  const {user, wasLoggedOut} = useSelector(getUserState);
 
-  const exit = (e) => {
-    e.preventDefault();
-    logout()
-      .then((res) => {
-        dispatch({
-          type: CLEAR_USER
-        });
-        //clear tokens
+  useEffect(() => {
+    if (wasLoggedOut){
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         navigate('/login');
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      })
+        dispatch({type: RESET})
+      }
+  }, [wasLoggedOut, user])
+
+  const exit = (e) => {
+    e.preventDefault();
+    dispatch(logoutUser());
   }
 
   return (

@@ -1,36 +1,26 @@
 import singleOrderStyles from './SingleOrder.module.css';
 import { FormattedDate, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
-import { getAllIngredients, statusName, colorStatus } from '../../utils/Data';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllIngredients, statusName, colorStatus, getOrderState } from '../../utils/Data';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getOrderDetails } from '../../utils/BurgerApi';
+import { useEffect } from 'react';
+import { getSingleOrderDetails } from '../../services/actions/order';
 
 const SingleOrder = () => {
-  const [singleOrderData, setSingleOrderData] = useState(null);
+  const dispatch = useDispatch();
   const { items } = useSelector(getAllIngredients);
+  const { singleOrderDetails } = useSelector(getOrderState);
   const { feedId } = useParams();
 
   useEffect(() => {
-    // note mutable flag
-    let isMounted = true;
-    getOrderDetails(feedId)
-      .then((res) => {
-        // add conditional check
-        if (isMounted) setSingleOrderData(res.orders[0]);
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      })
-    //clean up
-    return () => { isMounted = false };
+    dispatch(getSingleOrderDetails(feedId));
   }, [])
-  if (!singleOrderData) {
+  if (!singleOrderDetails) {
     return null;
   }
-  const { number, createdAt, status, name } = singleOrderData;
+  const { number, createdAt, status, name } = singleOrderDetails;
 
-  const ingredientsInOrder = singleOrderData.ingredients;
+  const ingredientsInOrder = singleOrderDetails.ingredients;
   const uniqIngredientObj = ingredientsInOrder.reduce((acc, item) => {
     if (!acc[item]) {
       acc[item] = 1;
@@ -63,7 +53,7 @@ const SingleOrder = () => {
   })
 
   return (
-    items.length && Boolean(singleOrderData) &&
+    items.length && Boolean(singleOrderDetails) &&
     <div className={`${singleOrderStyles.container} mb-15`}>
       <p className={`${singleOrderStyles.order_number} text text_type_digits-default mb-10`}>#{number}</p>
       <p className="text text_type_main-medium mb-3">{name}</p>

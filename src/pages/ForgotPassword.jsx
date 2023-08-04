@@ -1,41 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { forgotPassword } from '../utils/BurgerApi';
 import { useForm } from '../hooks/useForm';
 import { forgotUserPassword } from '../services/actions/autorization';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserState } from '../utils/Data';
 
 export const ForgotPasswordPage = () => {
-  const {values, handleChange} = useForm({email: ''});
+  const { values, handleChange } = useForm({ email: '' });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { forgotPassword, forgotPasswordFailed } = useSelector(getUserState);
-
-  const restorePassword = (e) => {
-    e.preventDefault();
-    if (!forgotPassword && !forgotPasswordFailed) {
-      dispatch(forgotUserPassword(values.email));
-    }
+  useEffect(() => {
     if (forgotPassword && !forgotPasswordFailed) {
       navigate('/reset-password', { state: { checkForgetToReset: true } });
     } else if (forgotPasswordFailed) {
       alert('Произошла ошибка при восстановлении пароля');
     }
-
-    // forgotPassword(values.email)
-    //   .then((res) => {
-    //     if (res && res.success) {
-    //       navigate('/reset-password', { state: { checkForgetToReset: true } })
-    //     } else {
-    //       alert('Произошла ошибка при восстановлении пароля')
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(`Произошла ошибка: ${err}`);
-    //   })
+  }, [forgotPassword, forgotPasswordFailed]);
+  const restorePassword = (e) => {
+    e.preventDefault();
+    if (!forgotPassword) {
+      dispatch(forgotUserPassword(values.email));
+    }
   }
   return (
     <div className={styles.main}>
