@@ -1,0 +1,99 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-radius: 40px;
+  background-color: #1C1C21;
+  box-shadow: px 0px 1px 0px rgba(0, 0, 0, 0.04), 0px 0px 2px 0px rgba(0, 0, 0, 0.06), 0px 4px 8px 0px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.burger_name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.price {
+  display: flex;
+  gap: 8px;
+}
+
+.ingredients {
+  display: flex;
+  position: relative;
+}
+
+.image_border {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(45deg, #801AB2, #4C4Cff);
+  border-radius: 50%;
+}
+
+.image_icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #1C1C21;
+  object-fit: cover;
+}
+
+.image_border:not(.image_border:first-of-type) {
+  margin-left: -12px;
+}
+
+.image_border:nth-child(1) {
+  z-index: 6;
+}
+
+.image_border:nth-child(2) {
+  z-index: 5;
+}
+
+.image_border:nth-child(3) {
+  z-index: 4;
+}
+
+.image_border:nth-child(4) {
+  z-index: 3;
+}
+
+.image_border:nth-child(5) {
+  z-index: 2;
+}
+
+.image_border:nth-child(6) {
+  z-index: 1;
+  position: relative;
+}
+
+.image_border:nth-child(6)::before {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #1C1C21;
+  opacity: .6;
+  content: '';
+}
+
+.counter {
+position: absolute;
+top: 20px;
+left: 20px;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}

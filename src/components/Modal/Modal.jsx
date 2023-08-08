@@ -8,15 +8,15 @@ import PropTypes from 'prop-types';
 const modalRoot = document.getElementById('react-modals');
 
 const Modal = ({ closeModal, title, children }) => {
-  React.useEffect( () => {
+  React.useEffect(() => {
     document.addEventListener('keydown', handleClose);
     return () => {
       document.removeEventListener('keydown', handleClose);
     }
-  },[])
+  }, [])
 
   const handleClose = (e) => {
-    if(e.currentTarget === e.target){
+    if (e.currentTarget === e.target) {
       closeModal();
     }
 
@@ -38,7 +38,7 @@ const Modal = ({ closeModal, title, children }) => {
               <CloseIcon type="primary" />
             </button>
           </div>
-      {children}
+          {children}
         </div>
       </section>
     </div>

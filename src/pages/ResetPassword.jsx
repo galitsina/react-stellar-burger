@@ -1,30 +1,25 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { resetPassword } from '../utils/BurgerApi';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from '../hooks/useForm';
+import { resetUserPassword, RESET } from '../services/actions/autorization';
+import { getUserState } from '../utils/Data';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const ResetPasswordPage = () => {
-  const {values, handleChange} = useForm({password: '', code: ''});
-
+  const { values, handleChange } = useForm({ password: '', code: '' });
+  const { resetPassword, resetPasswordFailed } = useSelector(getUserState);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   let state = useLocation();
 
   const createNewPassword = (e) => {
     e.preventDefault();
-    resetPassword(values.password, values.code)
-      .then((res) => {
-        if (res && res.success) {
-          navigate('/login')
-        } else {
-          alert('Произошла ошибка при восстановлении пароля');
-        }
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      })
+    if (!resetPassword) {
+      dispatch(resetUserPassword(values.password, values.code));
+    }
   }
 
   //неавторизованный пользователь не может напрямую попасть на маршрут /reset-password
@@ -34,6 +29,15 @@ export const ResetPasswordPage = () => {
       navigate('/forgot-password')
     }
   }, [state])
+
+  useEffect(() => {
+    if (resetPassword && !resetPasswordFailed) {
+      navigate('/login');
+    } else if (resetPasswordFailed) {
+      alert('Произошла ошибка при восстановлении пароля');
+      dispatch({ type: RESET });
+    }
+  }, [resetPassword, resetPasswordFailed])
 
   return (
     <div className={styles.main}>

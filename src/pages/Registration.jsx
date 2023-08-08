@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { createUser } from '../utils/BurgerApi';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { GET_USER_SUCCESS } from '../services/actions/autorization';
+import { createUser } from '../services/actions/autorization';
 import { routeMain } from '../utils/Data';
+import { getUserState } from '../utils/Data';
 
 export const RegistrationPage = () => {
   const [nameValue, setNameValue] = React.useState('')
@@ -17,6 +17,7 @@ export const RegistrationPage = () => {
   }
 
   const [emailValue, setEmailValue] = React.useState('')
+
   const onChangeEmail = e => {
     setEmailValue(e.target.value)
   }
@@ -29,24 +30,21 @@ export const RegistrationPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { isAuthChecked, refreshToken, accessToken } = useSelector(getUserState);
+  useEffect(() => {
+    if (isAuthChecked && refreshToken && accessToken) {
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("accessToken", accessToken);
+      navigate(routeMain);
+    }
+  }, [refreshToken, accessToken, isAuthChecked])
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUser({ email: emailValue, password: passwordValue, username: nameValue })
-      .then(res => {
-        localStorage.setItem("refreshToken", res.refreshToken);
-        localStorage.setItem("accessToken", res.accessToken);
-        navigate(routeMain);
-        dispatch({
-          type: GET_USER_SUCCESS,
-          user: res.user
-        })
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      })
+    if (isAuthChecked && !refreshToken && !accessToken) {
+      console.log("dispatch registration")
+      dispatch(createUser({ email: emailValue, password: passwordValue, username: nameValue }))
+    }
   }
-
-
 
   return (
     <div className={styles.main}>

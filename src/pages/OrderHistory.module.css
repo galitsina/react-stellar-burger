@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  gap: 40px;
+  width: 1240px;
+}
+
+.list {
+  width: 856px;
+  height: 868px;
+  overflow: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

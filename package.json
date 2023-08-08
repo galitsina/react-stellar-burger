@@ -2,6 +2,7 @@
   "name": "react-burger-starter",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://galitsina.github.io/react-stellar-burger",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
@@ -55,7 +56,6 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ],
-    "homepage": "https://galitsina.github.io/react-stellar-burger"
+    ]
   }
 }

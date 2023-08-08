@@ -1,13 +1,15 @@
 import {
   SEND_ORDER_REQUEST,
   SEND_ORDER_SUCCESS,
-  SEND_ORDER_FAILED
+  SEND_ORDER_FAILED,
+  GET_ORDER_DETAILS_SUCCESS
 } from '../actions/order';
 
 const initialOrderState = {
   orderNumber: 0,
   orderRequest: false,
-  orderFailed: false
+  orderFailed: false,
+  singleOrderDetails: null
 }
 
 export const orderReducer = (state = initialOrderState, action) => {
@@ -32,6 +34,14 @@ export const orderReducer = (state = initialOrderState, action) => {
         orderFailed: true,
         orderRequest: false
       };
+    }
+    case GET_ORDER_DETAILS_SUCCESS: {
+      return {
+        ...state,
+        orderFailed: false,
+        orderRequest: false,
+        singleOrderDetails: action.singleOrderDetails
+      }
     }
     default: {
       return state;

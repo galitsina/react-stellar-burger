@@ -76,7 +76,7 @@ export const resetPassword = (password, token) => {
   })
 }
 
-export const createUser = ({email, password, username}) => {
+export const createUserRequest = ({email, password, username}) => {
   return request('auth/register', {
     method: 'POST',
     body: JSON.stringify({
@@ -128,7 +128,7 @@ export const refreshToken = () => {
   })
 }
 
-export const getUser = () => {
+export const getUserRequest = () => {
   return fetchWithRefresh('auth/user', {
     method: 'GET',
     headers: {
@@ -142,11 +142,9 @@ export const updateUser = ({name, email, password}) => {
   return fetchWithRefresh('auth/user', {
     method: 'PATCH',
     body: JSON.stringify({
-
         "email": email,
         "name": name,
         "password": password
-
     }),
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -155,3 +153,11 @@ export const updateUser = ({name, email, password}) => {
   })
 }
 
+export const getOrderDetails = (orderNumber) => {
+  return request(`orders/${orderNumber}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8'
+    }
+  })
+}
