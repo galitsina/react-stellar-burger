@@ -11,9 +11,16 @@ The "Stellar Burgers" project is a space burger application.
 * Created an infrastructure environment using Webpack
 * Configured server interaction
 * Drag and drop functionality for ingredients
+* The routing is configured in the application: authorization, user registration, log out
+* The ability to edit a profile
+* View the order feed in real-time mode
 
 ## Used technologies:
 * HTML, CSS
 * JavaScript
 * JSX
 * React
+* Redux
+* WebSockets
+* Typescript
+
