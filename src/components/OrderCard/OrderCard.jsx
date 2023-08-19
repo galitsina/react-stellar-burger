@@ -15,7 +15,7 @@ const OrderCard = ({ currentStatus, currentOrder }) => {
   const necessaryIngredients = findItemsInOrder(ingredients, items);
   const iconList = necessaryIngredients.slice(0, maxImagesAmount);
   const leftIngredientsAmount = necessaryIngredients.length - maxImagesAmount;
-  const ingrPrice = necessaryIngredients.reduce((acc, item) => acc + item.price, 0);
+  const ingrPrice = necessaryIngredients.reduce((acc, item) => acc + item?.price, 0);
 
   return (
     items.length && Boolean(currentOrder) &&
@@ -40,7 +40,7 @@ const OrderCard = ({ currentStatus, currentOrder }) => {
           <div className={orderCardStyles.ingredients}>
             {iconList.map((item, i) => (
               <div className={orderCardStyles.image_border} key={i}>
-                <img className={orderCardStyles.image_icon} src={item.image} alt={item.name} />
+                <img className={orderCardStyles.image_icon} src={item?.image} alt={item?.name} />
               </div>
             ))
             }
