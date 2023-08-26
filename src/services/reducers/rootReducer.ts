@@ -14,3 +14,4 @@ export const rootReducer = combineReducers({
   user: userReducer,
   wsOrders: wsOrdersReducer
 });
+

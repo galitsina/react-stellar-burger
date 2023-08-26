@@ -15,12 +15,12 @@ export const POST_LOGIN_USER_SUCCESS = 'POST_LOGIN_USER_SUCCESS';
 export const POST_LOGIN_USER_FAILED = 'POST_LOGIN_USER_FAILED';
 
 
-export function createUser({ email, password, username }) {
+export function createUser({ email, password, name }) {
   return function (dispatch) {
     dispatch({
       type: AUTH_REQUEST
     });
-    createUserRequest({ email, password, username })
+    createUserRequest({ email, password, name })
       .then((res) => {
         if (res && res.success) {
           dispatch({

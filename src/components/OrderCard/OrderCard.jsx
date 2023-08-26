@@ -13,6 +13,7 @@ const OrderCard = ({ currentStatus, currentOrder }) => {
   const maxImagesAmount = 5;
 
   const necessaryIngredients = findItemsInOrder(ingredients, items);
+
   const iconList = necessaryIngredients.slice(0, maxImagesAmount);
   const leftIngredientsAmount = necessaryIngredients.length - maxImagesAmount;
   const ingrPrice = necessaryIngredients.reduce((acc, item) => acc + item?.price, 0);

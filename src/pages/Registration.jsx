@@ -42,10 +42,9 @@ export const RegistrationPage = () => {
     e.preventDefault();
     if (isAuthChecked && !refreshToken && !accessToken) {
       console.log("dispatch registration")
-      dispatch(createUser({ email: emailValue, password: passwordValue, username: nameValue }))
+      dispatch(createUser({ email: emailValue, password: passwordValue, name: nameValue }))
     }
   }
-
   return (
     <div className={styles.main}>
       <h1 className="text text_type_main-medium">Регистрация</h1>
