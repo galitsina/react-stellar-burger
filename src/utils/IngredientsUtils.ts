@@ -29,7 +29,7 @@ export const splitIngredients = (data: IIngredient[]): IIngredients => {
   return ingredients;
 }
 
-export const findItemsInOrder = (ingredientsInOrder: string[], allIngredients: []): IIngredient[] => {
+export const findItemsInOrder = (ingredientsInOrder: string[], allIngredients: IIngredient[]): IIngredient[] => {
   return ingredientsInOrder.reduce((prevValue: IIngredient[], ingredientInOrder: string) => {
     const ingredientDetails = allIngredients.find((ingredientInAll: { _id: TIngredientId }) => {
       return ingredientInAll._id === ingredientInOrder;

@@ -1,10 +1,14 @@
-import React from 'react';
+import {forwardRef} from 'react';
 import IngredientGroupStyles from './IngredientGroup.module.css';
 import BurgerIngredient from '../BurgerIngredient/BurgerIngredient';
-import { ingredientPropType } from '../../utils/PropTypes';
-import PropTypes from 'prop-types';
+import { IIngredient } from '../../services/types/ingredients';
 
-const IngredientGroup = React.forwardRef(({ title, ingredients, ingredientQty }, ref) => {
+interface IIngredientGroupProps {
+  ingredients: IIngredient[];
+  title: string;
+  ingredientQty: Record<string, number>;
+}
+const IngredientGroup = forwardRef<HTMLDivElement, IIngredientGroupProps>(({ title, ingredients, ingredientQty }, ref) => {
 
   return (
     <div ref={ref} className="pt-10">
@@ -17,11 +21,5 @@ const IngredientGroup = React.forwardRef(({ title, ingredients, ingredientQty },
     </div>
   )
 })
-
-IngredientGroup.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropType).isRequired,
-  title: PropTypes.string.isRequired,
-  ingredientQty: PropTypes.object.isRequired
-};
 
 export default IngredientGroup;

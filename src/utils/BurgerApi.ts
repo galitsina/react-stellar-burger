@@ -16,8 +16,8 @@ export const fetchWithRefresh = async <T>(endpoint: string, options: RequestInit
   try {
     const res = await fetch(`${BURGER_API_URL}/${endpoint}`, options);
     return await checkResponse<T>(res);
-  } catch (err) {
-    if (err instanceof Error && err.message === "jwt expired") {
+  } catch (err: any) {
+    if (err.message === "jwt expired") {
       const refreshData = await refreshToken() ; //обновляем токен
       if (!refreshData.success) {
         return Promise.reject(refreshData);

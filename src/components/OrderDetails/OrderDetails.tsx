@@ -1,8 +1,12 @@
 import OrderDetailsStyles from './OrderDetails.module.css';
 import acceptedIcon from '../../images/order-accpeted.svg';
-import PropTypes from "prop-types";
+import { FC } from 'react';
 
-const OrderDetails = ({ orderId }) => {
+interface IOrderDetailsProps {
+  orderId: number;
+}
+const OrderDetails: FC<IOrderDetailsProps> = ({ orderId }) => {
+
   return (
     <div className={`${OrderDetailsStyles.container} mt-4 mb-30`}>
       <p className={`${OrderDetailsStyles.order__number} text text_type_digits-large`}>{orderId}</p>
@@ -13,9 +17,5 @@ const OrderDetails = ({ orderId }) => {
     </div>
   )
 }
-
-OrderDetails.propTypes = {
-  orderId: PropTypes.number.isRequired
-};
 
 export default OrderDetails;

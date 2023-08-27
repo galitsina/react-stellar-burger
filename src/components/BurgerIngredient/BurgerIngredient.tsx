@@ -1,11 +1,15 @@
+import { FC } from 'react';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientStyles from './BurgerIngredient.module.css';
-import { ingredientPropType } from '../../utils/PropTypes';
-import PropTypes from 'prop-types';
+import { IIngredient } from '../../services/types/ingredients';
 import { useDrag } from "react-dnd";
 import { useLocation, Link } from 'react-router-dom';
 
-const BurgerIngredient = ({ ingredient, qty }) => {
+interface IBurgerIngredientProps {
+  ingredient: IIngredient;
+  qty: number;
+}
+const BurgerIngredient: FC<IBurgerIngredientProps> = ({ ingredient, qty }) => {
   const { image, price, name, _id } = ingredient;
   const [, dragRef] = useDrag({
     type: 'ingredient',
@@ -38,11 +42,6 @@ const BurgerIngredient = ({ ingredient, qty }) => {
     </Link>
   )
 }
-
-BurgerIngredient.propTypes = {
-  ingredient: ingredientPropType.isRequired,
-  qty: PropTypes.number
-};
 
 export default BurgerIngredient;
 

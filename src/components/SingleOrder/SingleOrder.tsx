@@ -6,22 +6,23 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getSingleOrderDetails } from '../../services/actions/order';
 
+
 const SingleOrder = () => {
   const dispatch = useDispatch();
   const { items } = useSelector(getAllIngredients);
   const { singleOrderDetails } = useSelector(getOrderState);
-  const { feedId } = useParams();
+  const { feedId = '' } = useParams<{feedId?: string}>();
 
   useEffect(() => {
     dispatch(getSingleOrderDetails(feedId));
-  }, [])
+  }, [dispatch, feedId])
   if (!singleOrderDetails) {
     return null;
   }
   const { number, createdAt, status, name } = singleOrderDetails;
 
   const ingredientsInOrder = singleOrderDetails.ingredients;
-  const uniqIngredientObj = ingredientsInOrder.reduce((acc, item) => {
+  const uniqIngredientObj: {[key: string]: number} = ingredientsInOrder.reduce((acc: {[key: string]: number}, item: string) => {
     if (!acc[item]) {
       acc[item] = 1;
     } else {
@@ -37,15 +38,15 @@ const SingleOrder = () => {
     const ingredientObj = items.find(item => {
       return item._id === key;
     });
-    totalPrice += (ingredientObj.price * value);
+    totalPrice += (ingredientObj!.price * value);
     return (
       <div className={singleOrderStyles.ingredient} key={i}>
         <div className={singleOrderStyles.image_border}>
-          <img className={singleOrderStyles.image_icon} src={ingredientObj.image} alt={ingredientObj.name} />
+          <img className={singleOrderStyles.image_icon} src={ingredientObj?.image} alt={ingredientObj?.name} />
         </div>
-        <p className={`${singleOrderStyles.ingredient_name} text text_type_main-default`}>{ingredientObj.name}</p>
+        <p className={`${singleOrderStyles.ingredient_name} text text_type_main-default`}>{ingredientObj?.name}</p>
         <div className={singleOrderStyles.price}>
-          <p className="text text_type_digits-default ">{value} x {ingredientObj.price}</p>
+          <p className="text text_type_digits-default ">{value} x {ingredientObj?.price}</p>
           <CurrencyIcon type="primary" />
         </div>
       </div>

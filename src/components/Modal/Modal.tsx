@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
+import React, { ReactNode, FC } from 'react';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import ModalStyles from './Modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,7 +7,14 @@ import PropTypes from 'prop-types';
 
 const modalRoot = document.getElementById('react-modals');
 
-const Modal = ({ closeModal, title, children }) => {
+interface IModalProps {
+  closeModal: () => void;
+  title: string;
+  children: ReactNode;
+}
+type MouseEvent = React.MouseEvent<HTMLElement>
+
+const Modal: FC<IModalProps> = ({ closeModal, title, children }) => {
   React.useEffect(() => {
     document.addEventListener('keydown', handleClose);
     return () => {
@@ -15,12 +22,12 @@ const Modal = ({ closeModal, title, children }) => {
     }
   }, [])
 
-  const handleClose = (e) => {
+  const handleClose = (e: MouseEvent | KeyboardEvent) => {
     if (e.currentTarget === e.target) {
       closeModal();
     }
 
-    if ((e.key === 'Escape')) {
+    if (e instanceof KeyboardEvent && e.key === 'Escape') {
       closeModal();
     }
   }
@@ -42,7 +49,7 @@ const Modal = ({ closeModal, title, children }) => {
         </div>
       </section>
     </div>
-    ), modalRoot)
+    ), modalRoot!)
 }
 
 Modal.propTypes = {

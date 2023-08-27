@@ -18,7 +18,6 @@ export const Loader = () => {
         size={100}
         color={COLOR}
         loading={loading}
-        css={override}
       />
     </div>
   );

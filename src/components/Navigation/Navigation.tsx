@@ -4,11 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RESET, logoutUser } from '../../services/actions/autorization';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { routeOrdersHistory, routeProfile } from '../../utils/Data';
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, FC, MouseEvent } from 'react';
 import { getUserState } from '../../utils/Data';
 
-export const Navigation = ({description}) => {
+interface INavigationProps {
+  description: string;
+}
+
+export const Navigation: FC<INavigationProps> = ({description}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,7 +27,7 @@ export const Navigation = ({description}) => {
       }
   }, [wasLoggedOut, user])
 
-  const exit = (e) => {
+  const exit = (e: MouseEvent) => {
     e.preventDefault();
     dispatch(logoutUser());
   }
@@ -41,10 +44,6 @@ export const Navigation = ({description}) => {
         <p className={`${navigationStyles.parargraph} text text_type_main-default text_color_inactive mt-20`}>{description}</p>
       </div>
   )
-}
-
-Navigation.propTypes = {
-  description: PropTypes.string
 }
 
 export default Navigation;
