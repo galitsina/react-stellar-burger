@@ -1,3 +1,6 @@
+import { TAuthActions } from '../actions/autorization';
+import { IUserData } from '../types/autorization';
+
 import {
   AUTH_REQUEST,
   GET_USER_SUCCESS,
@@ -10,7 +13,20 @@ import {
   RESET
 } from '../actions/autorization';
 
-const initialUserState = {
+interface IUserState {
+  user: IUserData | null;
+  isAuthChecked: boolean;
+  userFailed: boolean;
+  forgotPassword: boolean;
+  forgotPasswordFailed: boolean;
+  resetPassword: boolean;
+  resetPasswordFailed: boolean;
+  refreshToken: string | null |undefined;
+  accessToken: string | null| undefined;
+  wasLoggedOut: boolean
+}
+
+const initialUserState: IUserState = {
   user: null,
   isAuthChecked: true,
   userFailed: false,
@@ -23,7 +39,7 @@ const initialUserState = {
   wasLoggedOut: false
 }
 
-export const userReducer = (state = initialUserState, action) => {
+export const userReducer = (state: IUserState = initialUserState, action: TAuthActions): IUserState => {
   switch (action.type) {
     case AUTH_REQUEST: {
       return {

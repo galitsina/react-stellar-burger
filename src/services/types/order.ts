@@ -22,7 +22,7 @@ export interface IOrder {
 export interface IOrderRes {
   name: string;
   success: boolean;
-  data: IOrder;
+  order: IOrder;
 }
 
 export interface ISingleOrder {
@@ -40,4 +40,20 @@ export interface ISingleOrder {
 export interface ISingleOrderRes {
   orders: ISingleOrder[];
   success: boolean;
+}
+
+export interface IWSOrder {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface IWSOrdersRes {
+  success: boolean;
+  orders: IWSOrder[];
+  total: number;
+  totalToday: number;
+
 }

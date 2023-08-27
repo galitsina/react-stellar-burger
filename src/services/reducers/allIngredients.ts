@@ -8,7 +8,7 @@ import {
 
 interface IItemsState {
   items: IIngredient[];
-  itemsRequest: boolean,
+  itemsRequest: boolean;
   itemsFailed: boolean
 }
 const initialItemsState: IItemsState = {

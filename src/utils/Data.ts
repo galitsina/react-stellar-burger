@@ -1,3 +1,5 @@
+import { rootReducer } from '../services/reducers/rootReducer';
+
 export const routeMain = "/";
 export const routeLogin = "/login";
 export const routeRegister = "/register";
@@ -11,12 +13,12 @@ export const routeFeed = "/feed";
 export const routeFeedId = "/:feedId";
 export const routeOrdersHistory = "/orders";
 
-export const getAllIngredients = (state) => state.allIngredients;
-export const getAuthChecked = (state) => state.user.isAuthChecked;
-export const getOrderState = (state) => state.order;
-export const getSelectedIngredients = (state) => state.selectedIngredients;
-export const getUserState = (state) => state.user;
-export const getWsOrders = (state) => state.wsOrders;
+export const getAllIngredients = (state: ReturnType<typeof rootReducer>) => state.allIngredients;
+export const getAuthChecked = (state: ReturnType<typeof rootReducer>) => state.user.isAuthChecked;
+export const getOrderState = (state: ReturnType<typeof rootReducer>) => state.order;
+export const getSelectedIngredients = (state: ReturnType<typeof rootReducer>) => state.selectedIngredients;
+export const getUserState = (state: ReturnType<typeof rootReducer>) => state.user;
+export const getWsOrders = (state: ReturnType<typeof rootReducer>) => state.wsOrders;
 
 export const allOrdersUrl = 'wss://norma.nomoreparties.space/orders/all';
 export const privateOrdersUrl = 'wss://norma.nomoreparties.space/orders';
@@ -27,7 +29,7 @@ export const WebsocketStatus  = {
   OFFLINE: 'OFFLINE'
 }
 
-export const statusName = (status) => {
+export const statusName = (status: string) => {
   switch (status) {
     case 'done': {
       return 'Выполнен';
@@ -47,7 +49,7 @@ export const statusName = (status) => {
   }
 }
 
-export const colorStatus = (status) => {
+export const colorStatus = (status: string) => {
   switch (status) {
     case 'done': {
       return '#00CCCC';

@@ -5,13 +5,19 @@ import {
   CLEAR_ITEMS,
   MOVE_ITEMS
 } from '../actions/selectedIngredients';
+import { IIngredient } from '../types/ingredients';
+import { TSelectedIngredientsActions } from '../actions/selectedIngredients';
 
-const initialSelectedState = {
+interface ISelectedItemsState {
+  selectedItems: IIngredient[];
+  bun: IIngredient | null;
+}
+const initialSelectedState: ISelectedItemsState = {
   selectedItems: [],
   bun: null
 }
 
-export const selectedIngredientsReducer = (state = initialSelectedState, action) => {
+export const selectedIngredientsReducer = (state: ISelectedItemsState = initialSelectedState, action: TSelectedIngredientsActions):ISelectedItemsState => {
   switch (action.type) {
     case ADD_INGREDIENT: {
       const addedArr = [...state.selectedItems]

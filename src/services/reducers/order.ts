@@ -4,15 +4,23 @@ import {
   SEND_ORDER_FAILED,
   GET_ORDER_DETAILS_SUCCESS
 } from '../actions/order';
+import {TOrderActions} from '../actions/order';
+import { ISingleOrder } from '../types/order';
 
-const initialOrderState = {
+interface IOrderState {
+  orderNumber: number;
+  orderRequest: boolean;
+  orderFailed: boolean;
+  singleOrderDetails: ISingleOrder | null;
+}
+const initialOrderState: IOrderState = {
   orderNumber: 0,
   orderRequest: false,
   orderFailed: false,
   singleOrderDetails: null
 }
 
-export const orderReducer = (state = initialOrderState, action) => {
+export const orderReducer = (state: IOrderState = initialOrderState, action: TOrderActions): IOrderState => {
   switch (action.type) {
     case SEND_ORDER_REQUEST: {
       return {

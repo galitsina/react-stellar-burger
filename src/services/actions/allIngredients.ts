@@ -21,7 +21,7 @@ interface IGetItemsFailed {
 
 export type TGetItemsActions = | IGetItemsRequest | IGetItemsSuccess | IGetItemsFailed;
 
-export function getItems() {
+export function getItems(): (dispatch: Dispatch<TGetItemsActions>) => void {
   return function (dispatch: Dispatch<TGetItemsActions>) {
     dispatch({
       type: GET_ITEMS_REQUEST
