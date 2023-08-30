@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
@@ -26,7 +26,7 @@ import {
   getAllIngredients,
 } from '../../utils/Data';
 
-const App = () => {
+const App: FC = () => {
   const { itemsRequest } = useSelector(getAllIngredients);
 
   const dispatch = useDispatch();

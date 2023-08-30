@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import styles from './OrderList.module.css';
 import OrderFeed from '../components/OrderFeed/OrderFeed';
 import AllOrders from '../components/AllOrders/AllOrders';
@@ -7,7 +7,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import { WebsocketStatus, getWsOrders, allOrdersUrl} from '../utils/Data';
 import {connect, disconnect} from '../services/actions/wsOrders';
 
-export const OrderListPage = () => {
+export const OrderListPage: FC = () => {
   const dispatch = useDispatch();
   const  data = useSelector(getWsOrders);
   useEffect(()=> {

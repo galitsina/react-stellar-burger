@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, FC, FormEvent } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { useForm } from '../hooks/useForm';
 import { getUserState } from '../utils/Data';
 import { loginUser } from '../services/actions/autorization';
 
-export const LoginPage = () => {
+export const LoginPage: FC = () => {
   const { values, handleChange } = useForm({ email: '', password: '' });
   const { user, userFailed, accessToken, refreshToken, isAuthChecked } = useSelector(getUserState);
 
@@ -20,8 +20,8 @@ export const LoginPage = () => {
 
   useEffect(() => {
     if (user && !userFailed) {
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken!);
+      localStorage.setItem("accessToken", accessToken!);
       let pathroute;
       if (location.state === null || location.state.from === null) {
         pathroute = routeMain;
@@ -35,7 +35,7 @@ export const LoginPage = () => {
     }
   }, [user, userFailed])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!user && isAuthChecked) {
       dispatch(loginUser({ email: values.email, password: values.password }))

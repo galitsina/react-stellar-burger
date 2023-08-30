@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, FC, FormEvent, ChangeEvent } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
@@ -8,22 +8,22 @@ import { createUser } from '../services/actions/autorization';
 import { routeMain } from '../utils/Data';
 import { getUserState } from '../utils/Data';
 
-export const RegistrationPage = () => {
+export const RegistrationPage: FC = () => {
   const [nameValue, setNameValue] = React.useState('')
-  const inputRef = React.useRef(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
+    setTimeout(() => inputRef.current?.focus(), 0)
     alert('Icon Click Callback')
   }
 
   const [emailValue, setEmailValue] = React.useState('')
 
-  const onChangeEmail = e => {
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmailValue(e.target.value)
   }
 
   const [passwordValue, setPasswordValue] = React.useState('')
-  const onChangePassword = e => {
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPasswordValue(e.target.value)
   }
 
@@ -38,7 +38,7 @@ export const RegistrationPage = () => {
       navigate(routeMain);
     }
   }, [refreshToken, accessToken, isAuthChecked])
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (isAuthChecked && !refreshToken && !accessToken) {
       console.log("dispatch registration")

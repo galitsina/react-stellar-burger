@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC, FormEvent, ChangeEvent } from 'react';
 import profileStyles from './Profile.module.css';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useForm } from '../hooks/useForm';
@@ -7,13 +7,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getUserState } from '../utils/Data';
 import { getUserData, patchUserData } from '../services/actions/autorization';
 
-export const ProfilePage = () => {
+export const ProfilePage: FC = () => {
   const { values, handleChange, setValues } = useForm({ name: '', email: '', password: '' });
   const [isLoginInputDisabled, setLoginInputDisabled] = React.useState(true);
   const [isChangeInput, setChangeInput] = React.useState(false);
   const { user, isAuthChecked, wasLoggedOut} = useSelector(getUserState);
   const dispatch = useDispatch();
-  const changeInput = (e) => {
+  const changeInput = (e: ChangeEvent<HTMLInputElement>) => {
     handleChange(e);
     setChangeInput(true);
   }
@@ -26,23 +26,23 @@ export const ProfilePage = () => {
     if (isAuthChecked && !user && !wasLoggedOut) {
       dispatch(getUserData())
     } else if (user) {
-      setValues({ ...values, name: user.name, email: user.email });
+      setValues({ ...values, name: user?.name || '', email: user.email });
     }
   }, [user, isAuthChecked])
 
-  const saveUser = (e) => {
+  const saveUser = (e: FormEvent) => {
     e.preventDefault();
     if (isAuthChecked) {
       dispatch(patchUserData({ name: values.name, email: values.email, password: values.password }));
     }
   }
 
-  const cancelChanges = (e) => {
+  const cancelChanges = (e: FormEvent) => {
     e.preventDefault();
     if (isAuthChecked) {
       dispatch(getUserData())
     } else if (user) {
-      setValues({ ...values, name: user.name, email: user.email });
+      setValues({ ...values, name: user?.name || '', email: user.email });
     }
   }
 

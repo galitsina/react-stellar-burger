@@ -6,7 +6,7 @@ import { FC } from 'react';
 
 const OrderFeed: FC = () => {
   const { wsOrders } = useSelector(getWsOrders);
-  const { orders } = wsOrders!;
+  const orders = wsOrders? wsOrders.orders : [];
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC, FormEvent } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { forgotUserPassword } from '../services/actions/autorization';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserState } from '../utils/Data';
 
-export const ForgotPasswordPage = () => {
+export const ForgotPasswordPage: FC = () => {
   const { values, handleChange } = useForm({ email: '' });
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export const ForgotPasswordPage = () => {
       alert('Произошла ошибка при восстановлении пароля');
     }
   }, [forgotPassword, forgotPasswordFailed]);
-  const restorePassword = (e) => {
+  const restorePassword = (e: FormEvent) => {
     e.preventDefault();
     if (!forgotPassword) {
       dispatch(forgotUserPassword(values.email));

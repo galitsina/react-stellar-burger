@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, FC, FormEvent } from 'react';
 import styles from './AutorizationForm.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
@@ -8,14 +8,14 @@ import { resetUserPassword, RESET } from '../services/actions/autorization';
 import { getUserState } from '../utils/Data';
 import { useSelector, useDispatch } from 'react-redux';
 
-export const ResetPasswordPage = () => {
+export const ResetPasswordPage: FC = () => {
   const { values, handleChange } = useForm({ password: '', code: '' });
   const { resetPassword, resetPasswordFailed } = useSelector(getUserState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let state = useLocation();
 
-  const createNewPassword = (e) => {
+  const createNewPassword = (e: FormEvent) => {
     e.preventDefault();
     if (!resetPassword) {
       dispatch(resetUserPassword(values.password, values.code));
