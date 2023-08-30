@@ -30,10 +30,10 @@ const wsActions = socketMiddleware({
   onError: LIVE_ORDER_WS_ERROR
 });
 
-const composeEnhancers =
-  typeof window === 'object' && (window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? (window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
+// const composeEnhancers =
+//   typeof window === 'object' && (window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+//     ? (window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+//     : compose;
 
 // const enhancer = composeEnhancers(applyMiddleware(thunk, wsActions));
 // const store = createStore(rootReducer, enhancer);
