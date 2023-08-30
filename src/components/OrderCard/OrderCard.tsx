@@ -8,11 +8,11 @@ import { useSelector } from "react-redux";
 import { getAllIngredients, colorStatus } from "../../utils/Data";
 import { useLocation, Link } from "react-router-dom";
 import { findItemsInOrder } from "../../utils/IngredientsUtils";
-import { ISingleOrder } from "../../services/types/order";
+import { IWSOrder } from "../../services/types/order";
 
 interface IOrderCardProps {
   currentStatus: string;
-  currentOrder: ISingleOrder;
+  currentOrder: IWSOrder;
 }
 const OrderCard: FC<IOrderCardProps> = ({ currentStatus, currentOrder }) => {
   const { items } = useSelector(getAllIngredients);

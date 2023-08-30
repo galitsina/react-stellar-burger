@@ -1,15 +1,15 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientsStyles from './BurgerIngredients.module.css';
-import React, { useEffect, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useMemo, FC } from 'react';
+import { useSelector } from 'react-redux';
 import { splitIngredients } from '../../utils/IngredientsUtils';
 import IngredientGroup from '../IngredientGroup/IngredientGroup';
 import { useInView } from 'react-intersection-observer';
 import { getAllIngredients, getSelectedIngredients } from '../../utils/Data';
 
-const BurgerIngredients = (ref) => {
+const BurgerIngredients: FC = () => {
   const { selectedItems, bun } = useSelector(getSelectedIngredients);
-  const { items, itemsRequest } = useSelector(getAllIngredients);
+  const { items } = useSelector(getAllIngredients);
 
   const Tabs = useMemo(() => {
     return {
@@ -18,7 +18,7 @@ const BurgerIngredients = (ref) => {
       FILLINGS: 'fillings'
     }
   }, []);
-  const [current, setCurrent] = React.useState(Tabs.BUN);
+  const [current, setCurrent] = React.useState<string>(Tabs.BUN);
   const { buns, sauces, fillings } = splitIngredients(items);
 
   const { ref: refBun, inView: inViewBun } = useInView({
@@ -41,7 +41,7 @@ const BurgerIngredients = (ref) => {
     }
   }, [inViewBun, inViewSauce, inViewFilling])
 
-  const ingredientQty = {} //obj with key=id, value=qty of each ingredient
+  const ingredientQty: {[key: string]: number } = {} //obj with key=id, value=qty of each ingredient
   const bunQty = bun ? { [bun._id]: 2} : {}
   for (let i = 0; i < selectedItems.length; i++) {
     if (!ingredientQty[selectedItems[i]._id]) {
@@ -73,9 +73,5 @@ const BurgerIngredients = (ref) => {
     </section>
   )
 }
-
-// BurgerIngredients.propTypes = {
-//   data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
-// }
 
 export default BurgerIngredients;

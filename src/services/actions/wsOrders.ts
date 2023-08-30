@@ -1,4 +1,4 @@
-import { IWSOrder } from '../types/order';
+import { IWSOrdersRes } from '../types/order';
 
 export const LIVE_ORDER_CONNECT: 'LIVE_ORDER_CONNECT' = 'LIVE_ORDER_CONNECT';
 export const LIVE_ORDER_DISCONNECT: 'LIVE_ORDER_DISCONNECT' = 'LIVE_ORDER_DISCONNECT';
@@ -31,7 +31,7 @@ interface ILiveOrderWSClose {
 
 interface ILiveOrderWSMessage {
   type: typeof LIVE_ORDER_WS_MESSAGE;
-  payload: IWSOrder[];
+  payload: IWSOrdersRes;
 }
 
 interface ILiveOrderWSError {

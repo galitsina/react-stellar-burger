@@ -1,16 +1,16 @@
 import { WebsocketStatus } from '../../utils/Data';
 import {LIVE_ORDER_WS_CONNECTING, LIVE_ORDER_WS_OPEN, LIVE_ORDER_WS_CLOSE, LIVE_ORDER_WS_MESSAGE, LIVE_ORDER_WS_ERROR } from '../actions/wsOrders';
 import { TWSOrdersActions } from '../actions/wsOrders';
-import { IWSOrder } from '../types/order';
+import { IWSOrdersRes } from '../types/order';
 
 interface IInitialWSState {
   status: string;
-  wsOrders: IWSOrder[];
+  wsOrders: IWSOrdersRes | null;
   connectingError: string;
 }
 const initialState: IInitialWSState = {
   status: WebsocketStatus.OFFLINE,
-  wsOrders: [],
+  wsOrders: null,
   connectingError: ''
 }
 

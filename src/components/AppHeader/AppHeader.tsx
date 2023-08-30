@@ -1,9 +1,10 @@
+import { FC } from 'react';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import AppHeaderStyles from './AppHeader.module.css';
 import { Link, useLocation } from 'react-router-dom';
 import { routeMain, routeFeed } from '../../utils/Data';
 
-const AppHeader = () => {
+const AppHeader: FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const isPatnameProfile = /profile.*/.test(pathname);

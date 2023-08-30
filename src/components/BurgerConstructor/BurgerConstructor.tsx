@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, FC } from 'react';
 import { Loader } from '../Loader/Loader';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorIngredient from '../BurgerConstructorIngredient/BurgerConstructorIngredient';
@@ -12,8 +12,9 @@ import { ADD_INGREDIENT, ADD_BUN, CLEAR_ITEMS } from '../../services/actions/sel
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { getOrderState, getSelectedIngredients } from '../../utils/Data';
+import { IIngredient } from '../../services/types/ingredients';
 
-const BurgerConstructor = () => {
+const BurgerConstructor: FC = () => {
   const { orderNumber, orderRequest } = useSelector(getOrderState);
   const { selectedItems, bun } = useSelector(getSelectedIngredients);
   const isUserAuth = Boolean(localStorage.getItem("refreshToken") && localStorage.getItem("accessToken"));
@@ -30,7 +31,7 @@ const BurgerConstructor = () => {
 
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
-    drop(item) {
+    drop(item: IIngredient) {
       if (item.type === 'bun') {
         dispatch({
           type: ADD_BUN,
@@ -70,7 +71,7 @@ const BurgerConstructor = () => {
   }
 
   const modal = (
-    <Modal closeModal={handleCloseModal} >
+    <Modal closeModal={handleCloseModal} title=''>
       {orderRequest ? (<Loader />) : (<OrderDetails orderId={orderNumber} />)}
     </Modal>
   )
@@ -82,9 +83,9 @@ const BurgerConstructor = () => {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={`${bun.name} (верх)`}
-            price={bun.price}
-            thumbnail={bun.image}
+            text={`${bun!.name} (верх)`}
+            price={bun!.price}
+            thumbnail={bun!.image}
             extraClass="ml-8"
           />
           <div className={`${constructorStyles.scroll} custom-scroll pr-1`}>
@@ -94,9 +95,9 @@ const BurgerConstructor = () => {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={`${bun.name} (низ)`}
-            price={bun.price}
-            thumbnail={bun.image}
+            text={`${bun!.name} (низ)`}
+            price={bun!.price}
+            thumbnail={bun!.image}
             extraClass="ml-8"
           />
         </div> : <div className={constructorStyles.empty__constructor} ref={dropTarget}></div>}
@@ -115,9 +116,5 @@ const BurgerConstructor = () => {
     </section>
   )
 }
-
-// BurgerConstructor.propTypes = {
-//   data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired
-// }
 
 export default BurgerConstructor;

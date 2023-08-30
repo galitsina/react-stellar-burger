@@ -49,6 +49,7 @@ export interface IWSOrder {
   number: number;
   createdAt: string;
   updatedAt: string;
+  name: string;
 }
 export interface IWSOrdersRes {
   success: boolean;
