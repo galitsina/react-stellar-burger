@@ -1,9 +1,10 @@
 import { TWSActions, TWSOrdersActions } from '../actions/wsOrders';
 import { MiddlewareAPI } from 'redux';
+import { AppDispatch, RootState } from '../types/index';
 
 export const socketMiddleware  = (wsActions: TWSActions) => {
 
-  return (store: MiddlewareAPI) => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
     return (next: (action: TWSOrdersActions ) => void) => (action: TWSOrdersActions) => {
       const { dispatch } = store;

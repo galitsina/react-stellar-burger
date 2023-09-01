@@ -1,4 +1,5 @@
 import { rootReducer } from '../services/reducers/rootReducer';
+import { RootState } from '../services/types/index';
 
 export const routeMain = "/";
 export const routeLogin = "/login";
@@ -13,12 +14,12 @@ export const routeFeed = "/feed";
 export const routeFeedId = "/:feedId";
 export const routeOrdersHistory = "/orders";
 
-export const getAllIngredients = (state: ReturnType<typeof rootReducer>) => state.allIngredients;
-export const getAuthChecked = (state: ReturnType<typeof rootReducer>) => state.user.isAuthChecked;
-export const getOrderState = (state: ReturnType<typeof rootReducer>) => state.order;
-export const getSelectedIngredients = (state: ReturnType<typeof rootReducer>) => state.selectedIngredients;
-export const getUserState = (state: ReturnType<typeof rootReducer>) => state.user;
-export const getWsOrders = (state: ReturnType<typeof rootReducer>) => state.wsOrders;
+export const getAllIngredients = (state: RootState) => state.allIngredients;
+export const getAuthChecked = (state: RootState) => state.user.isAuthChecked;
+export const getOrderState = (state: RootState) => state.order;
+export const getSelectedIngredients = (state: RootState) => state.selectedIngredients;
+export const getUserState = (state: RootState) => state.user;
+export const getWsOrders = (state: RootState) => state.wsOrders;
 
 export const allOrdersUrl = 'wss://norma.nomoreparties.space/orders/all';
 export const privateOrdersUrl = 'wss://norma.nomoreparties.space/orders';

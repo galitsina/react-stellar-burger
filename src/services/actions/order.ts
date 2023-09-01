@@ -1,6 +1,6 @@
 import { sendOrder, getOrderDetails } from '../../utils/BurgerApi';
 import { ISingleOrder } from '../types/order';
-import { Dispatch } from 'redux';
+import { AppDispatch, AppThunk } from '../types/index';
 
 export const SEND_ORDER_REQUEST: 'SEND_ORDER_REQUEST' = 'SEND_ORDER_REQUEST';
 export const SEND_ORDER_SUCCESS: 'SEND_ORDER_SUCCESS' = 'SEND_ORDER_SUCCESS';
@@ -27,8 +27,8 @@ interface IOrderFailed {
 
 export type TOrderActions = IOrderRequest | IOrderSuccess | IOrderDetailsSuccess | IOrderFailed;
 
-export function getOrder(ids: string[]): (dispatch: Dispatch<TOrderActions>) => void {
-  return function (dispatch: Dispatch<TOrderActions>) {
+export const getOrder: AppThunk = (ids: string[]) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: SEND_ORDER_REQUEST
     });
@@ -54,8 +54,8 @@ export function getOrder(ids: string[]): (dispatch: Dispatch<TOrderActions>) => 
   }
 }
 
-export function getSingleOrderDetails(id: string): (dispatch: Dispatch<TOrderActions>) => void {
-  return function (dispatch: Dispatch<TOrderActions>) {
+export const getSingleOrderDetails: AppThunk = (id: string) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: SEND_ORDER_REQUEST
     });

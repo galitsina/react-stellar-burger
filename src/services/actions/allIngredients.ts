@@ -1,6 +1,6 @@
 import { getIngredients } from '../../utils/BurgerApi';
 import { IIngredient, IIngredientRes } from '../types/ingredients';
-import { Dispatch } from 'redux';
+import { AppDispatch, AppThunk } from '../types/index';
 
 export const GET_ITEMS_REQUEST: 'GET_ITEMS_REQUEST' = 'GET_ITEMS_REQUEST';
 export const GET_ITEMS_SUCCESS: 'GET_ITEMS_SUCCESS' = 'GET_ITEMS_SUCCESS';
@@ -21,8 +21,8 @@ interface IGetItemsFailed {
 
 export type TGetItemsActions = | IGetItemsRequest | IGetItemsSuccess | IGetItemsFailed;
 
-export function getItems(): (dispatch: Dispatch<TGetItemsActions>) => void {
-  return function (dispatch: Dispatch<TGetItemsActions>) {
+export const getItems: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_ITEMS_REQUEST
     });

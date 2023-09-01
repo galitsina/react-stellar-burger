@@ -1,6 +1,6 @@
 import { createUserRequest, forgotPassword, resetPassword, login, getUserRequest, updateUser, logout } from '../../utils/BurgerApi';
-import { Dispatch } from 'redux';
 import { IUserData } from '../types/autorization';
+import { AppDispatch, AppThunk } from '../types/index';
 
 export const AUTH_REQUEST: 'AUTH_REQUEST' = 'AUTH_REQUEST';
 export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
@@ -62,11 +62,11 @@ interface IPostLoginUserSuccess {
 interface IPostLoginUserFailed {
   type: typeof POST_LOGIN_USER_FAILED;
 }
-//TODO: TAuthActions for typing dispatch: Dispatch<TAuthActions>  in reducer: Reducer = (state: IItemsState = initialItemsState, action: TAuthActions)
+
 export type TAuthActions = IAuthRequest | IGetUserSuccess | IAuthFailed | IClearUser | IReset | IForgotPasswordSuccess | IForgotPasswordFailed | IResetPasswordSuccess | IResetPasswordFailed | IPostLoginUserSuccess | IPostLoginUserFailed;
 
-export function createUser({ email, password, name }: IUserData): (dispatch: Dispatch<TAuthActions>) => void {
-  return function (dispatch: Dispatch<TAuthActions>) {
+export const createUser: AppThunk = ({ email, password, name }: IUserData) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: AUTH_REQUEST
     });
@@ -95,8 +95,8 @@ export function createUser({ email, password, name }: IUserData): (dispatch: Dis
   }
 }
 
-export function forgotUserPassword(emailValue: string): (dispatch: Dispatch<TAuthActions>) => void {
-  return function (dispatch: Dispatch<TAuthActions>) {
+export const forgotUserPassword : AppThunk = (emailValue: string) => {
+  return function (dispatch: AppDispatch) {
     forgotPassword(emailValue)
       .then((res) => {
         if (res && res.success) {
@@ -118,8 +118,8 @@ export function forgotUserPassword(emailValue: string): (dispatch: Dispatch<TAut
   }
 }
 
-export function resetUserPassword(passwordValue: string, codeValue: string): (dispatch: Dispatch<TAuthActions>) => void {
-  return function (dispatch: Dispatch<TAuthActions>) {
+export const resetUserPassword: AppThunk = (passwordValue: string, codeValue: string) => {
+  return function (dispatch: AppDispatch) {
     resetPassword(passwordValue, codeValue)
       .then((res) => {
         if (res && res.success) {
@@ -141,8 +141,8 @@ export function resetUserPassword(passwordValue: string, codeValue: string): (di
   }
 }
 
-export function loginUser({ email, password }: IUserData): (dispatch: Dispatch<TAuthActions>) => void {
-  return function (dispatch: Dispatch<TAuthActions>) {
+export const loginUser: AppThunk = ({ email, password }: IUserData) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: AUTH_REQUEST
     });
@@ -170,8 +170,8 @@ export function loginUser({ email, password }: IUserData): (dispatch: Dispatch<T
   }
 }
 
-export function getUserData(): (dispatch: Dispatch<TAuthActions>) => void {
-  return function (dispatch: Dispatch<TAuthActions>) {
+export const getUserData: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: AUTH_REQUEST
     });
@@ -198,8 +198,8 @@ export function getUserData(): (dispatch: Dispatch<TAuthActions>) => void {
   }
 }
 
-export function logoutUser(): (dispatch: Dispatch<TAuthActions>) => void {
-  return function (dispatch: Dispatch<TAuthActions>) {
+export const logoutUser: AppThunk =  () => {
+  return function (dispatch: AppDispatch) {
     logout()
       .then((res) => {
         dispatch({
@@ -213,8 +213,8 @@ export function logoutUser(): (dispatch: Dispatch<TAuthActions>) => void {
 }
 
 
-export function patchUserData({ name, email, password }: IUserData): (dispatch: Dispatch<TAuthActions>) => void {
-  return function (dispatch: Dispatch<TAuthActions>) {
+export const patchUserData: AppThunk = ({ name, email, password }: IUserData) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: AUTH_REQUEST
     })
