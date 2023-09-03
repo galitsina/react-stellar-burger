@@ -1,5 +1,0 @@
-export const ADD_INGREDIENT = 'ADD_INGREDIENT';
-export const ADD_BUN = 'ADD_BUN';
-export const DECREASE_INGREDIENT = 'DECREASE_INGREDIENT';
-export const CLEAR_ITEMS = 'CLEAR_ITEMS';
-export const MOVE_ITEMS = 'MOVE_ITEMS';
