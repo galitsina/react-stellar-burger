@@ -24,3 +24,4 @@ The "Stellar Burgers" project is a space burger application.
 * WebSockets
 * Typescript
 
+Link https://galitsina.github.io/react-stellar-burger/
