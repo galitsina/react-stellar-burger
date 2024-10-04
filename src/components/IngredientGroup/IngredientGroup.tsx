@@ -13,7 +13,7 @@ const IngredientGroup = forwardRef<HTMLDivElement, IIngredientGroupProps>(({ tit
   return (
     <div ref={ref} className="pt-10">
       <h2 className="text text_type_main-medium">{title}</h2>
-      <div className={`${IngredientGroupStyles.ingredient__list} pt-6 pl-4 pr-1`}>
+      <div className={`${IngredientGroupStyles.ingredient__list} pt-6`}>
         {ingredients.map(item => (
           <BurgerIngredient qty={ingredientQty[item._id]} ingredient={item} key={item._id} />
         ))}
